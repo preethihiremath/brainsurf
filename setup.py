@@ -1,38 +1,30 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy import signal
+from setuptools import setup, find_packages
 
-# Read the Excel file into a pandas DataFrame
-df = pd.read_excel('eeg_data.xlsx')
-
-# Convert the DataFrame to a numpy array
-data = df.to_numpy()
-
-# Extract the time and EEG signals from the array
-time = data[:, 0]
-eeg = data[:, 1]
-
-# Extract the frequency-domain signals from the array
-alpha = data[:, 2]
-beta = data[:, 3]
-delta = data[:, 4]
-theta = data[:, 5]
-
-# Plot the time-domain signal
-plt.figure()
-plt.plot(time, eeg)
-plt.xlabel('Time (sec)')
-plt.ylabel('EEG')
-plt.title('Time-Domain EEG Signal')
-
-# Compute the power spectral density (PSD) using Welch's method
-f, psd = signal.welch(eeg, fs=1/(time[1]-time[0]), nperseg=1024)
-
-# Plot the frequency-domain signals
-plt.figure()
-plt.semilogx(f, psd)
-plt.xlabel('Frequency (Hz)')
-plt.ylabel('PSD')
-plt.title('Frequency-Domain EEG Signal')
-plt.show()
+setup(
+    name='esp',
+    version='0.1',
+    description='EEG Signal Processing Library',
+    author='RPR',
+    author_email='preethivhiremath.vh@gmail.com',
+    url='https://github.com/preethihiremath/esp',
+    packages=find_packages(),
+    install_requires=[
+        'numpy',
+        'scipy',
+        'matplotlib',
+        'mne',
+        # Add any other dependencies here
+    ],
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Science/Research',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Topic :: Scientific/Engineering :: Medical Science Apps.',
+    ],
+)
