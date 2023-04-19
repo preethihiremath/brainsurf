@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy import signal
 
 def plot_power_spectrum(data, sfreq):
     """
@@ -13,7 +14,10 @@ def plot_power_spectrum(data, sfreq):
         The sampling frequency of the data, in Hz.
     """
     n_channels, n_samples = data.shape
+    print(n_channels)
+    print(n_samples)
     freqs = np.fft.rfftfreq(n_samples, 1/sfreq)
+
     psd = np.abs(np.fft.rfft(data, axis=1))**2 / (n_samples * sfreq)
     
     fig, ax = plt.subplots()
@@ -23,3 +27,5 @@ def plot_power_spectrum(data, sfreq):
     ax.set_ylabel('Power ($\mu V^2$/Hz)')
     ax.legend()
     plt.show()
+
+

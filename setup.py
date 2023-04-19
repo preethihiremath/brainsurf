@@ -13,7 +13,6 @@ setup(
         'scipy',
         'matplotlib',
         'mne',
-        # Add any other dependencies here
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',

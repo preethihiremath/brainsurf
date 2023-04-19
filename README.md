@@ -2,17 +2,19 @@
 ESP is a Python library for processing and analyzing EEG (electroencephalography) signals. It provides a collection of tools and methods for reading, preprocessing, analyzing, and visualizing EEG data. The library is built using the NumPy, SciPy, and Matplotlib packages and is designed to be easily extensible for custom analysis and visualization needs
 
 # Installation
-ESP can be installed using pip, a Python package manager. To install the latest stable version of the library, run the following command:
+ESP can be installed using pip, a Python package manager. To install the latest stable version of the library, run the following command `\n`:
+
 pip install esp
 
 # Github
-Alternatively, you can clone the repository from GitHub and install it from source:
-git clone https://github.com/preethihiremath/esp
-cd esp
-pip install -r requirements.txt
-python setup.py install
+Alternatively, you can clone the repository from GitHub and install it from source:`\n`
+git clone https://github.com/preethihiremath/esp`\n`
+cd esp`\n`
+pip install -r requirements.txt`\n`
+python setup.py install`\n`
 
-
+# Usage
+```python
 import esp.data as data
 import esp.preprocessing as pre
 import esp.analysis as analysis
