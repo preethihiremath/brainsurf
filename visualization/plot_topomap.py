@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+# cannot visualize as we dont have positional information
 def plot_topomap(data, pos, vmin=None, vmax=None, cmap='viridis', show=True):
     """Plot a topographic map of EEG data.
     

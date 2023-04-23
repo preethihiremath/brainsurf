@@ -28,6 +28,7 @@ def plot_time_series(data, sfreq, tmin=0, tmax=None):
         ax.plot(times[mask], data[i, mask], label=f'Channel {i+1}')
     ax.set_xlabel('Time (s)')
     ax.set_ylabel('Amplitude ($\mu V$)')
+    plt.title('Time Series')
     ax.legend()
     plt.show()
 # def plot_time_series(data, sfreq, tmin=0, tmax=None):
