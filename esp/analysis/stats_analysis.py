@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 from scipy import signal
 from scipy.signal import welch, coherence, correlate
+import nolds
+
 
 def calculate_mean(data):
     """
@@ -174,3 +176,42 @@ def calculate_relative_power(freqs, psd):
         "beta": beta_power / total_power
     }
 
+
+
+def calc_ap_entropy(data, m=2, r=0.2):
+    """
+    Calculates the approximate entropy of a given dataset.
+
+    Parameters
+    ----------
+    data : numpy.ndarray
+        The input data.
+    m : int, optional
+        The embedding dimension (default is 2).
+    r : float, optional
+        The tolerance value (default is 0.2).
+
+    Returns
+    -------
+    ae : float
+        The approximate entropy of the input data.
+    """
+    ae = nolds.sampen(data, emb_dim=m, tolerance=r)
+    return ae
+
+def calc_fractal_dimension(data):
+    """
+    Calculates the fractal dimension of a given dataset.
+
+    Parameters
+    ----------
+    data : numpy.ndarray
+        The input data.
+
+    Returns
+    -------
+    fd : float
+        The fractal dimension of the input data.
+    """
+    fd = nolds.dfa(data)
+    return fd
