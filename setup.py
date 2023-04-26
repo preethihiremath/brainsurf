@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='esp',
+    name='esppy',
     version='0.1',
     description='EEG Signal Processing Library',
-    author='RPR',
+    author='preethivhiremath',
     author_email='preethivhiremath.vh@gmail.com',
     url='https://github.com/preethihiremath/esp',
     packages=find_packages(),
@@ -13,6 +13,7 @@ setup(
         'scipy',
         'matplotlib',
         'mne',
+        'nolds'
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
