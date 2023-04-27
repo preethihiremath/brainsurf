@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='esppy',
-    version='0.1',
+    name='eegpy',
+    version='1.0',
     description='EEG Signal Processing Library',
     author='preethivhiremath',
     author_email='preethivhiremath.vh@gmail.com',
-    url='https://github.com/preethihiremath/esp',
+    url='https://github.com/preethihiremath/eegpy',
     packages=find_packages(),
     install_requires=[
         'numpy',

@@ -1,9 +1,0 @@
-LICENSE
-README.md
-setup.py
-esp/__init__.py
-esp.egg-info/PKG-INFO
-esp.egg-info/SOURCES.txt
-esp.egg-info/dependency_links.txt
-esp.egg-info/requires.txt
-esp.egg-info/top_level.txt

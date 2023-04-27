@@ -1,14 +1,14 @@
 # Description
-esppy is a Python library for processing and analyzing EEG (electroencephalography) signals. It provides a collection of tools and methods for reading, preprocessing, analyzing, and visualizing EEG data. The library is built using the NumPy, SciPy, and Matplotlib packages and is designed to be easily extensible for custom analysis and visualization needs
+eegpy is a Python library for processing and analyzing EEG (electroencephalography) signals. It provides a collection of tools and methods for reading, preprocessing, analyzing, and visualizing EEG data. The library is built using the NumPy, SciPy, and Matplotlib packages and is designed to be easily extensible for custom analysis and visualization needs
 
 # Installation
-esppy can be installed using pip, a Python package manager. To install the latest stable version of the library, run the following command :
+eegpy can be installed using pip, a Python package manager. To install the latest stable version of the library, run the following command :
 
-`pip install esp`
+`pip install eegpy`
 
 # Github
 Alternatively, you can clone the repository from GitHub and install it from source:
-`git clone https://github.com/preethihiremath/esp`
+`git clone https://github.com/preethihiremath/eegpy`
 `cd esp`
 `pip install -r requirements.txt`
 `python setup.py install`
@@ -16,10 +16,10 @@ Alternatively, you can clone the repository from GitHub and install it from sour
 
 # Usage
 ```python
-import esp.data as data
-import esp.preprocessing as pre
-import esp.analysis as analysis
-import esp.visualization as vis
+import eegpy.data as data
+import eegpy.preprocessing as pre
+import eegpy.analysis as analysis
+import eegpy.visualization as vis
 
 #load EEG data from file
 eeg_data = data.read_edf_file('eeg_data.edf')
