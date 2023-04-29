@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='eegpy',
-    version='1.0',
+    name='brainsurf',
+    version='0.0.1',
     description='EEG Signal Processing Library',
     author='preethivhiremath',
     author_email='preethivhiremath.vh@gmail.com',
