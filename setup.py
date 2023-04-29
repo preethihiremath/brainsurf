@@ -6,7 +6,7 @@ setup(
     description='EEG Signal Processing Library',
     author='preethivhiremath',
     author_email='preethivhiremath.vh@gmail.com',
-    url='https://github.com/preethihiremath/eegpy',
+    url='https://github.com/preethihiremath/brainsurf',
     packages=find_packages(),
     install_requires=[
         'numpy',
