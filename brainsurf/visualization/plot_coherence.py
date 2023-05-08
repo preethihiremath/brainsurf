@@ -5,7 +5,6 @@ import seaborn as sns
 
 
 def plot_coherence(data, freq_range=None):
-    """Visualize coherence plot for the given EEG data."""
     if freq_range is not None:
         data = data[(data['frequency'] >= freq_range[0]) & (data['frequency'] <= freq_range[1])]
     

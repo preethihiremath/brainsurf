@@ -29,7 +29,6 @@ def calculate_phase_sync(data1, data2):
     return np.abs(np.mean(np.exp(1j * phase_diff)))
 
 
-
 def calculate_granger_causality(x, y, maxlag=10):
     data = np.column_stack((x, y))
     results = grangercausalitytests(data, maxlag=maxlag, verbose=False)
@@ -37,6 +36,5 @@ def calculate_granger_causality(x, y, maxlag=10):
     return p_value
 
 def calculate_mutual_information(x, y):
-
     mi = mutual_info_score(x, y)
     return mi

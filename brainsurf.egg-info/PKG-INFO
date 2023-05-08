@@ -2,7 +2,7 @@ Metadata-Version: 2.1
 Name: brainsurf
 Version: 0.0.1
 Summary: EEG Signal Processing Library
-Home-page: https://github.com/preethihiremath/eegpy
+Home-page: https://github.com/preethihiremath/brainsurf
 Author: preethivhiremath
 Author-email: preethivhiremath.vh@gmail.com
 License: UNKNOWN

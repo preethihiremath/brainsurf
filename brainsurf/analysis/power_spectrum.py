@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.signal import welch, coherence, correlate
 import astropy as ast 
-from scipy.signal import periodogram , multitaper
+# from scipy.signal import periodogram , multitaper
 
 def psd_fft(data, sfreq, freq_range=(0, 100)):
     n_freqs = int(sfreq/2) + 1
@@ -24,13 +24,13 @@ def psd_lombscargle(signal, fs):
     frequency, power = ast.timeseries.LombScargle(time, signal).autopower(normalization='psd')
     return frequency, power
 
-def psd_multitaper(signal, fs, nperseg=256, NW=3):
-    f, Pxx = multitaper(signal, fs, nperseg=nperseg, NW=NW, adaptive=True)
-    return f, Pxx.mean(axis=1)
+# def psd_multitaper(signal, fs, nperseg=256, NW=3):
+#     f, Pxx = multitaper(signal, fs, nperseg=nperseg, NW=NW, adaptive=True)
+#     return f, Pxx.mean(axis=1)
 
-def psd_periodogram(signal, fs, nfft=None):
-    f, Pxx = periodogram(signal, fs, nfft=nfft)
-    return f, Pxx
+# def psd_periodogram(signal, fs, nfft=None):
+#     f, Pxx = periodogram(signal, fs, nfft=nfft)
+#     return f, Pxx
 
 def calculate_nperseg(data):
     n = len(data)
