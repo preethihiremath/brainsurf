@@ -10,6 +10,52 @@ def calculate_mean(data):
 def calculate_variance(data):
     return np.var(data)
 
+import numpy as np
+
+def calculate_skewness(data):
+    """
+    Calculates skewness of given data.
+
+    Parameters:
+    data (ndarray): 1-D or 2-D array of data.
+
+    Returns:
+    float: Skewness value of the data.
+    """
+    if data.ndim == 1:
+        mean = np.mean(data)
+        std = np.std(data)
+        skewness = np.mean((data - mean) ** 3) / std ** 3
+    elif data.ndim == 2:
+        mean = np.mean(data, axis=1)
+        std = np.std(data, axis=1)
+        skewness = np.mean(((data - mean[:, np.newaxis]) ** 3), axis=1) / (std ** 3)
+    else:
+        raise ValueError('Data must be 1-D or 2-D array.')
+    return skewness
+
+def calculate_kurtosis(data):
+    """
+    Calculates kurtosis of given data.
+
+    Parameters:
+    data (ndarray): 1-D or 2-D array of data.
+
+    Returns:
+    float: Kurtosis value of the data.
+    """
+    if data.ndim == 1:
+        mean = np.mean(data)
+        std = np.std(data)
+        kurtosis = np.mean((data - mean) ** 4) / std ** 4
+    elif data.ndim == 2:
+        mean = np.mean(data, axis=1)
+        std = np.std(data, axis=1)
+        kurtosis = np.mean(((data - mean[:, np.newaxis]) ** 4), axis=1) / (std ** 4)
+    else:
+        raise ValueError('Data must be 1-D or 2-D array.')
+    return kurtosis
+
 def calculate_coherence(data1, data2, fs):
     freqs, psd_data1 = signal.welch(data1, fs=fs, nperseg=1024)
     freqs, psd_data2 = signal.welch(data2, fs=fs, nperseg=1024)
