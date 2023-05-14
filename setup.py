@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='brainsurf',
-    version='0.0.1',
+    version='0.0.2',
     description='EEG Signal Processing Library',
     author='preethivhiremath',
     author_email='preethivhiremath.vh@gmail.com',
