@@ -15,7 +15,7 @@ class EEGComparison:
         # Calculate power spectra for pre and post-meditation data
         pre_f, pre_power_spectrum = self.calculate_power_spectrum(self.pre_data)
         post_f, post_power_spectrum = self.calculate_power_spectrum(self.post_data)
-
+        
         # Calculate mean and standard deviation of power spectrum for pre and post-meditation data
         pre_mean = np.mean(pre_power_spectrum, axis=1)
         pre_std = np.std(pre_power_spectrum, axis=1)
@@ -29,3 +29,5 @@ class EEGComparison:
 
         # Return the feature vector
         return np.concatenate([mean_diff, std_diff])
+    
+
