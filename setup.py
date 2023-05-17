@@ -13,7 +13,8 @@ setup(
         'scipy',
         'matplotlib',
         'mne',
-        'nolds'
+        'pyabf'
+        'nolds',
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',

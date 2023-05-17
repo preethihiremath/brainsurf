@@ -1,7 +1,8 @@
 import pyedflib
 import pandas as pd
+from .eeg_data import EEGDataFactory
 
-def read_edf_to_dataframe(file_path):
+def read_edf_to_factory_object(file_path):
     f = pyedflib.EdfReader(file_path)
     signal_labels = f.getSignalLabels()
     sample_rates = f.getSampleFrequencies()
@@ -18,5 +19,6 @@ def read_edf_to_dataframe(file_path):
     df = df.resample(pd.Timedelta(seconds=1/sample_rates[0])).mean()
     df.index.name = 'Time'
     f.close()
-    
-    return df
+    factory = EEGDataFactory()
+    eeg_data = factory.create_eeg_data(file_path)
+    return eeg_data
