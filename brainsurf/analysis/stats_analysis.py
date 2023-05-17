@@ -5,10 +5,10 @@ from scipy import signal
 import nolds
 
 def calculate_mean(data):
-    return np.mean(data)
+    return np.nanmean(data)
 
 def calculate_variance(data):
-    return np.var(data)
+    return np.nanvar(data)
 
 import numpy as np
 
