@@ -23,16 +23,17 @@ def calculate_skewness(data):
     float: Skewness value of the data.
     """
     if data.ndim == 1:
-        mean = np.mean(data)
-        std = np.std(data)
-        skewness = np.mean((data - mean) ** 3) / std ** 3
+        mean = np.nanmean(data)
+        std = np.nanstd(data)
+        skewness = np.nanmean((data - mean) ** 3) / std ** 3
     elif data.ndim == 2:
-        mean = np.mean(data, axis=1)
-        std = np.std(data, axis=1)
-        skewness = np.mean(((data - mean[:, np.newaxis]) ** 3), axis=1) / (std ** 3)
+        mean = np.nanmean(data, axis=1)
+        std = np.nanstd(data, axis=1)
+        skewness = np.nanmean(((data - mean[:, np.newaxis]) ** 3), axis=1) / (std ** 3)
     else:
         raise ValueError('Data must be 1-D or 2-D array.')
     return skewness
+
 
 def calculate_kurtosis(data):
     """
@@ -45,16 +46,17 @@ def calculate_kurtosis(data):
     float: Kurtosis value of the data.
     """
     if data.ndim == 1:
-        mean = np.mean(data)
-        std = np.std(data)
-        kurtosis = np.mean((data - mean) ** 4) / std ** 4
+        mean = np.nanmean(data)
+        std = np.nanstd(data)
+        kurtosis = np.nanmean((data - mean) ** 4) / std ** 4
     elif data.ndim == 2:
-        mean = np.mean(data, axis=1)
-        std = np.std(data, axis=1)
-        kurtosis = np.mean(((data - mean[:, np.newaxis]) ** 4), axis=1) / (std ** 4)
+        mean = np.nanmean(data, axis=1)
+        std = np.nanstd(data, axis=1)
+        kurtosis = np.nanmean(((data - mean[:, np.newaxis]) ** 4), axis=1) / (std ** 4)
     else:
         raise ValueError('Data must be 1-D or 2-D array.')
     return kurtosis
+
 
 def calculate_coherence(data1, data2, fs):
     freqs, psd_data1 = signal.welch(data1, fs=fs, nperseg=1024)
