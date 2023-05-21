@@ -2,6 +2,8 @@ import pandas as pd
 import pyedflib
 import h5py 
 import numpy as np
+from scipy.signal import welch
+
 
 class EEGData:
     def __init__(self, **kwargs):
@@ -81,6 +83,105 @@ class EEGData:
             return values
         else:
             raise KeyError(f"Key '{key}' does not exist in the EEGData object.")
+        
+    def extract_frequency_bands(self):
+        if 'raw' in self.data and 'sec' in self.data:
+            raw_data = self.data['raw']
+            sec_data = self.data['sec']
+            
+            # Perform extraction of frequency bands from raw data if they don't exist
+            if 'alpha' not in self.data:
+                epoch_length = 1000  # Length of each epoch in milliseconds
+                num_epochs = len(raw_data) // epoch_length
+                pre_epochs = np.split(raw_data[:num_epochs * epoch_length], num_epochs)
+                
+                pre_features = []
+                
+                for epoch in pre_epochs:
+                    f, psd = welch(epoch, fs=128)  # Adjust fs (sampling frequency) as per your data
+                    
+                    # Check if the frequency range contains data points
+                    alpha_psd = psd[(f >= 8) & (f <= 13)]
+                    alpha_power = np.mean(alpha_psd) if alpha_psd.any() else np.nan
+                    pre_features.append(alpha_power)
+                
+                # Make sure the extracted features have the same length as the original data
+                pre_features += [np.nan] * (len(raw_data) - len(pre_features))
+                
+                self.data['alpha'] = pre_features
+                        
+            if 'beta' not in self.data:
+                pre_features = []
+                
+                for epoch in pre_epochs:
+                    f, psd = welch(epoch, fs=128)  # Adjust fs (sampling frequency) as per your data
+                    
+                    # Check if the frequency range contains data points
+                    beta_psd = psd[(f >= 13) & (f <= 30)]
+                    beta_power = np.mean(beta_psd) if beta_psd.any() else np.nan
+                    pre_features.append(beta_power)
+                
+                # Make sure the extracted features have the same length as the original data
+                pre_features += [np.nan] * (len(raw_data) - len(pre_features))
+                
+                self.data['beta'] = pre_features
+            
+            if 'delta' not in self.data:
+                pre_features = []
+                
+                for epoch in pre_epochs:
+                    f, psd = welch(epoch, fs=128)  # Adjust fs (sampling frequency) as per your data
+                    
+                    # Check if the frequency range contains data points
+                    delta_psd = psd[(f >= 1) & (f <= 4)]
+                    delta_power = np.mean(delta_psd) if delta_psd.any() else np.nan
+                    pre_features.append(delta_power)
+                
+                # Make sure the extracted features have the same length as the original data
+                pre_features += [np.nan] * (len(raw_data) - len(pre_features))
+                
+                self.data['delta'] = pre_features
+            
+            if 'theta' not in self.data:
+                pre_features = []
+                
+                for epoch in pre_epochs:
+                    f, psd = welch(epoch, fs=128)  # Adjust fs (sampling frequency) as per your data
+                    
+                    # Check if the frequency range contains data points
+                    theta_psd = psd[(f >= 4) & (f <= 8)]
+                    theta_power = np.mean(theta_psd) if theta_psd.any() else np.nan
+                    pre_features.append(theta_power)
+                
+                # Make sure the extracted features have the same length as the original data
+                pre_features += [np.nan] * (len(raw_data) - len(pre_features))
+                
+                self.data['theta'] = pre_features
+
+            if 'gamma' not in self.data:
+                pre_features = []
+                
+                for epoch in pre_epochs:
+                    f, psd = welch(epoch, fs=128)  # Adjust fs (sampling frequency) as per your data
+                    
+                    # Check if the frequency range contains data points
+                    gamma_psd = psd[(f >= 30) & (f <= 50)]
+                    gamma_power = np.mean(gamma_psd) if gamma_psd.any() else np.nan
+                    pre_features.append(gamma_power)
+                
+                # Make sure the extracted features have the same length as the original data
+                pre_features += [np.nan] * (len(raw_data) - len(pre_features))
+                
+                self.data['gamma'] = pre_features
+
+            
+            # Repeat the above code for other frequency bands (beta, theta, delta, gamma)
+            # Adjust the frequency ranges and feature extraction accordingly
+            
+        else:
+            raise ValueError("Required keys 'raw' and 'sec' are missing in the EEGData object.")
+
+
 
 
 class EEGDataFactory:
