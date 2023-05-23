@@ -45,6 +45,15 @@ class EEGData:
             if isinstance(value, pd.Series):
                 value = value.to_frame()  # Convert Series to DataFrame
             self.data[key] = value
+            
+    def dropna(self):
+        """
+        Remove rows with missing values from the EEGData object.
+
+        Returns:
+            None
+        """
+        self.data.dropna(inplace=True)
 
     def summary(self, max_len=5):
         """

@@ -4,7 +4,7 @@ from scipy.stats import pearsonr, spearmanr
 from scipy.signal import correlate
 import numpy as np
 import statsmodels as st
-from st.tsa.stattools import grangercausalitytests
+# from st.tsa.stattools import grangercausalitytests
 from sklearn.metrics import mutual_info_score
 
 
@@ -29,11 +29,11 @@ def calculate_phase_sync(data1, data2):
     return np.abs(np.mean(np.exp(1j * phase_diff)))
 
 
-def calculate_granger_causality(x, y, maxlag=10):
-    data = np.column_stack((x, y))
-    results = grangercausalitytests(data, maxlag=maxlag, verbose=False)
-    p_value = results[maxlag][0]['ssr_ftest'][1]
-    return p_value
+# def calculate_granger_causality(x, y, maxlag=10):
+#     data = np.column_stack((x, y))
+#     results = grangercausalitytests(data, maxlag=maxlag, verbose=False)
+#     p_value = results[maxlag][0]['ssr_ftest'][1]
+#     return p_value
 
 def calculate_mutual_information(x, y):
     mi = mutual_info_score(x, y)

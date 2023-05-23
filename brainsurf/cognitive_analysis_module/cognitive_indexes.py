@@ -8,33 +8,15 @@ def calculate_band_power(freqs, power, bands):
 
     return band_power
 
-
-def calculate_pe(band_power):
-    pe = band_power['beta'] / band_power['alpha']
-    return pe
-
-
-def calculate_arousal_index(band_power):
-    ai = (band_power['beta'] + band_power['gamma']) / band_power['alpha']
-    return ai
-
-
-def calculate_neural_activity(band_power):
-    na = (band_power['beta'] + band_power['gamma']) / (band_power['theta'] + band_power['alpha'])
-    return na
-
-
-def calculate_engagement(band_power):
-    eng = (band_power['theta'] + band_power['alpha']) / (band_power['beta'] + band_power['gamma'])
-    return eng
-
-def calculate_performance_enhancement(alpha_power, beta_power):
+def calculate_pe(alpha_power, beta_power):
     pe = beta_power / alpha_power
     return pe
+
 
 def calculate_arousal_index(alpha_power, theta_power):
     ai = alpha_power / theta_power
     return ai
+
 
 def calculate_neural_activity(delta_power, theta_power, alpha_power, beta_power):
     na = (delta_power + theta_power) / (alpha_power + beta_power)
