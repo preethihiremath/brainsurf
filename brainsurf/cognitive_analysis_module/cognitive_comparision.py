@@ -113,3 +113,53 @@ def compare_cognitive_indexes(cognitive_indexes_before, cognitive_indexes_after,
         raise ValueError("Invalid test_type. Options: 'paired_ttest', 'wilcoxon'")
 
     return test_statistic, p_value
+
+import pandas as pd
+from scipy import stats
+
+def analyze_eeg_data(pre_merged, post_merged):
+    # Extract the relevant feature columns
+    pre_eeg_raw = pre_merged['raw']
+    pre_alpha = pre_merged['alpha']
+    pre_beta = pre_merged['beta']
+    pre_theta = pre_merged['theta']
+    pre_delta = pre_merged['delta']
+
+    post_eeg_raw = post_merged['raw']
+    post_alpha = post_merged['alpha']
+    post_beta = post_merged['beta']
+    post_theta = post_merged['theta']
+    post_delta = post_merged['delta']
+
+    # Perform t-tests for each feature
+    t_statistic_raw, p_value_raw = stats.ttest_ind(pre_eeg_raw, post_eeg_raw)
+    t_statistic_alpha, p_value_alpha = stats.ttest_ind(pre_alpha, post_alpha)
+    t_statistic_beta, p_value_beta = stats.ttest_ind(pre_beta, post_beta)
+    t_statistic_theta, p_value_theta = stats.ttest_ind(pre_theta, post_theta)
+    t_statistic_delta, p_value_delta = stats.ttest_ind(pre_delta, post_delta)
+
+    # Perform ANOVA for each feature
+    f_statistic_raw, p_value_anova_raw = stats.f_oneway(pre_eeg_raw, post_eeg_raw)
+    f_statistic_alpha, p_value_anova_alpha = stats.f_oneway(pre_alpha, post_alpha)
+    f_statistic_beta, p_value_anova_beta = stats.f_oneway(pre_beta, post_beta)
+    f_statistic_theta, p_value_anova_theta = stats.f_oneway(pre_theta, post_theta)
+    f_statistic_delta, p_value_anova_delta = stats.f_oneway(pre_delta, post_delta)
+
+    # Calculate effect sizes (Cohen's d) for each feature
+    effect_size_raw = abs(pre_eeg_raw.mean() - post_eeg_raw.mean()) / pre_eeg_raw.std()
+    effect_size_alpha = abs(pre_alpha.mean() - post_alpha.mean()) / pre_alpha.std()
+    effect_size_beta = abs(pre_beta.mean() - post_beta.mean()) / pre_beta.std()
+    effect_size_theta = abs(pre_theta.mean() - post_theta.mean()) / pre_theta.std()
+    effect_size_delta = abs(pre_delta.mean() - post_delta.mean()) / pre_delta.std()
+
+    # Create a DataFrame to store the results
+    results = pd.DataFrame({
+        'Feature': ['EEG', 'Alpha', 'Beta', 'Theta', 'Delta'],
+        'T-Stat': [t_statistic_raw, t_statistic_alpha, t_statistic_beta, t_statistic_theta, t_statistic_delta],
+        'P-Value (T-Test)': [p_value_raw, p_value_alpha, p_value_beta, p_value_theta, p_value_delta],
+        'F-Stat': [f_statistic_raw, f_statistic_alpha, f_statistic_beta, f_statistic_theta, f_statistic_delta],
+        'P-Value (ANOVA)': [p_value_anova_raw, p_value_anova_alpha, p_value_anova_beta, p_value_anova_theta, p_value_anova_delta],
+        'Effect Size': [effect_size_raw, effect_size_alpha, effect_size_beta, effect_size_theta, effect_size_delta]
+    })
+
+    return results
