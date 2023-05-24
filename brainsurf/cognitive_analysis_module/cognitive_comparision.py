@@ -163,3 +163,66 @@ def analyze_eeg_data(pre_merged, post_merged):
     })
 
     return results
+
+
+import pandas as pd
+import numpy as np
+
+def analyze_stroop_data(data):
+    # Convert the data to a pandas DataFrame for easier analysis
+    df = pd.DataFrame(data, columns=["Color 1", "Color 2", "Congruent", "Response Time", "Accuracy", "Block", "Trial"])
+
+    # Calculate average response time for congruent and incongruent trials
+    congruent_rt = df[df["Congruent"] == 1]["Response Time"]
+    incongruent_rt = df[df["Congruent"] == 0]["Response Time"]
+
+    avg_congruent_rt = np.mean(congruent_rt)
+    avg_incongruent_rt = np.mean(incongruent_rt)
+
+    # Perform t-test for response times (without using scipy)
+    t_value, p_value = independent_ttest(congruent_rt, incongruent_rt)
+
+    # Calculate average accuracy for congruent and incongruent trials
+    congruent_acc = df[df["Congruent"] == 1]["Accuracy"]
+    incongruent_acc = df[df["Congruent"] == 0]["Accuracy"]
+
+    avg_congruent_acc = np.mean(congruent_acc)
+    avg_incongruent_acc = np.mean(incongruent_acc)
+
+    # Perform t-test for accuracy (without using scipy)
+    t_value_acc, p_value_acc = independent_ttest(congruent_acc, incongruent_acc)
+
+    # Print the results
+    print("Response Time Analysis:")
+    print("Average Response Time - Congruent: {:.2f}".format(avg_congruent_rt))
+    print("Average Response Time - Incongruent: {:.2f}".format(avg_incongruent_rt))
+    print("T-Test - Response Time: t-value = {:.2f}, p-value = {:.4f}".format(t_value, p_value))
+    print("\nAccuracy Analysis:")
+    print("Average Accuracy - Congruent: {:.2f}%".format(avg_congruent_acc * 100))
+    print("Average Accuracy - Incongruent: {:.2f}%".format(avg_incongruent_acc * 100))
+    print("T-Test - Accuracy: t-value = {:.2f}, p-value = {:.4f}".format(t_value_acc, p_value_acc))
+
+def independent_ttest(x, y):
+    # Calculate the t-value and p-value for two independent samples
+    mean_diff = np.mean(x) - np.mean(y)
+    var_x = np.var(x, ddof=1)
+    var_y = np.var(y, ddof=1)
+    n_x = len(x)
+    n_y = len(y)
+
+    pooled_var = ((n_x - 1) * var_x + (n_y - 1) * var_y) / (n_x + n_y - 2)
+    se_diff = np.sqrt(pooled_var * (1 / n_x + 1 / n_y))
+    t_value = mean_diff / se_diff
+
+    df = n_x + n_y - 2
+    p_value = 2 * (1 - t_cdf(abs(t_value), df))
+
+    return t_value, p_value
+
+def t_cdf(t, df):
+    # Calculate the cumulative distribution function (CDF) of the t-distribution
+    x = np.arange(0, t + 0.01, 0.01)
+    pdf_vals = (1 / np.sqrt(df * np.pi)) * np.power(1 + np.square(x) / df, -((df + 1) / 2))
+    cdf_vals = np.cumsum(pdf_vals) * 0.01
+
+    return cdf_vals[-1]
