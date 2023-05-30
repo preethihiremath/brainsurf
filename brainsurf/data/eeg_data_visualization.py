@@ -10,40 +10,46 @@ class EEGVisualizationFactory:
     def __init__(self, data):
         self.data = data
 
-    def plot_eeg_signal(self):
+    def plot_eeg_signal(self, x_label='Time [sec]', y_label='EEG', title='EEG Signal'):
         sec = self.data['sec']
-        EEG = self.data['raw']
-        plt.plot(sec, EEG)
-        plt.xlabel('Time [sec]')
-        plt.ylabel('EEG')
-        plt.title('EEG Signal')
+        eeg = self.data['raw']
+        plt.plot(sec, eeg)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.title(title)
         plt.show()
 
-    def plot_spectrogram(self, channel):
+    def plot_spectrogram(self, channel, fs=None, window='hann', nperseg=256, noverlap=None,
+                         cmap='RdBu_r', scaling='density', x_label='Time [sec]', y_label='Frequency [Hz]',
+                         title=None):
         sec = self.data['sec']
-        data = self.data[channel]
-        fs = 1.0 / (sec[1] - sec[0])
-        window = 'hann'
-        nperseg = 256
-        noverlap = None
-        cmap = 'RdBu_r'
-        scaling = 'density'
-        f, t, Sxx = spectrogram(data, fs=fs, window=window, nperseg=nperseg, noverlap=noverlap, scaling=scaling)
+        channel_data = self.data[channel]
+        if fs is None:
+            fs = 1.0 / (sec[1] - sec[0])
+        f, t, Sxx = spectrogram(channel_data, fs=fs, window=window, nperseg=nperseg, noverlap=noverlap, scaling=scaling)
         plt.pcolormesh(t, f, Sxx, cmap=cmap)
-        plt.ylabel('Frequency [Hz]')
-        plt.xlabel('Time [sec]')
-        plt.title(f'Spectrogram ({channel})')
+        plt.ylabel(y_label)
+        plt.xlabel(x_label)
+        if title is not None:
+            plt.title(title)
+        else:
+            plt.title(f'Spectrogram ({channel})')
         plt.colorbar()
         plt.show()
 
-    def plot_power_spectrum(self, channel):
+    def plot_power_spectrum(self, channel, fs=None, x_label='Frequency [Hz]', y_label='Power Spectral Density',
+                            title=None):
         sec = self.data['sec']
-        data = self.data[channel]
-        fs = 1.0 / (sec[1] - sec[0])
-        f, Pxx = plt.psd(data, Fs=fs)
-        plt.xlabel('Frequency [Hz]')
-        plt.ylabel('Power Spectral Density')
-        plt.title(f'Power Spectrum ({channel})')
+        channel_data = self.data[channel]
+        if fs is None:
+            fs = 1.0 / (sec[1] - sec[0])
+        f, Pxx = plt.psd(channel_data, Fs=fs)
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        if title is not None:
+            plt.title(title)
+        else:
+            plt.title(f'Power Spectrum ({channel})')
         plt.show()
 
     def plot_coherence(self, channel1, channel2, freq_range=None):
@@ -77,13 +83,17 @@ class EEGVisualizationFactory:
         plt.show()
 
     def plot_heatmap(self):
-       corr_matrix = self.data.corr()
-       plt.figure(figsize=(10, 8))
-       sns.heatmap(corr_matrix, cmap='RdBu_r', annot=True, fmt=".2f", vmin=-1, vmax=1)
-       plt.title('EEG Data Heatmap')
-       plt.xticks(rotation=90)
-       plt.yticks(rotation=0)
-       plt.show()
+        eeg_df = pd.DataFrame(self.data)
+        # Calculate the correlation matrix
+        corr_matrix = eeg_df.corr()
+        # Plot the correlation heatmap
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(corr_matrix, cmap='RdBu_r', annot=True, fmt=".2f", vmin=-1, vmax=1)
+        plt.title('EEG Data Heatmap')
+        plt.xticks(rotation=90)
+        plt.yticks(rotation=0)
+        plt.show()
+
 
 
 

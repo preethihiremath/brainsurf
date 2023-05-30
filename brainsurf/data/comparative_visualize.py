@@ -1,280 +1,4 @@
-# import matplotlib.pyplot as plt
-
-# class ComparativeVisualizationFactory:
-    # @staticmethod
-    # def visualize_mean(pre_mean, during_mean, post_mean):
-    #     # Set up the figure and axes
-    #     fig, ax = plt.subplots(figsize=(10, 6))
-
-    #     # Create the line plots
-    #     x_labels = ['Pre', 'During', 'Post']
-    #     line_x = range(3)
-    #     line_y1 = [pre_mean, during_mean, post_mean]
-    #     ax.plot(line_x, line_y1, color='blue', linewidth=2, linestyle='--', marker='o', label='Mean')
-
-    #     # Set the labels and titlez
-    #     ax.set_xticks(line_x)
-    #     ax.set_xticklabels(x_labels)
-    #     ax.set_xlabel('Meditation State')
-    #     ax.set_ylabel('Mean')
-    #     ax.set_title('Comparison of Mean Values')
-    #     ax.legend()
-
-    #     # Show the plot
-    #     plt.show()
-
-    # @staticmethod
-    # def visualize_standard_deviation(pre_std, during_std, post_std):
-    #     # Set up the figure and axes
-    #     fig, ax = plt.subplots(figsize=(10, 6))
-
-    #     # Create the line plots
-    #     x_labels = ['Pre', 'During', 'Post']
-    #     line_x = range(3)
-    #     line_y1 = [pre_std, during_std, post_std]
-    #     ax.plot(line_x, line_y1, color='red', linewidth=2, linestyle='--', marker='o', label='Standard Deviation')
-
-    #     # Set the labels and title
-    #     ax.set_xticks(line_x)
-    #     ax.set_xticklabels(x_labels)
-    #     ax.set_xlabel('Meditation State')
-    #     ax.set_ylabel('Standard Deviation')
-    #     ax.set_title('Comparison of Standard Deviation Values')
-    #     ax.legend()
-
-    #     # Show the plot
-    #     plt.show()
-
-    # # Implement the remaining visualization functions for median, interquartile range, skewness, kurtosis, range, variance, RMS, spectral power, coherence, and fractal dimension.
-
-    # @staticmethod
-    # def visualize_median(pre_median, during_median, post_median):
-    #     # Set up the figure and axes
-    #     fig, ax = plt.subplots(figsize=(10, 6))
-
-    #     # Create the line plots
-    #     x_labels = ['Pre', 'During', 'Post']
-    #     line_x = range(3)
-    #     line_y1 = [pre_median, during_median, post_median]
-    #     ax.plot(line_x, line_y1, color='green', linewidth=2, linestyle='--', marker='o', label='Median')
-
-    #     # Set the labels and title
-    #     ax.set_xticks(line_x)
-    #     ax.set_xticklabels(x_labels)
-    #     ax.set_xlabel('Meditation State')
-    #     ax.set_ylabel('Median')
-    #     ax.set_title('Comparison of Median Values')
-    #     ax.legend()
-
-    #     # Show the plot
-    #     plt.show()
-
-    # @staticmethod
-    # def visualize_interquartile_range(pre_iqr, during_iqr, post_iqr):
-    #     # Set up the figure and axes
-    #     fig, ax = plt.subplots(figsize=(10, 6))
-
-    #     # Create the line plots
-    #     x_labels = ['Pre', 'During', 'Post']
-    #     line_x = range(3)
-    #     line_y1 = [pre_iqr, during_iqr, post_iqr]
-    #     ax.plot(line_x, line_y1, color='purple', linewidth=2, linestyle='--', marker='o', label='Interquartile Range')
-
-    #     # Set the labels and title
-    #     ax.set_xticks(line_x)
-    #     ax.set_xticklabels(x_labels)
-    #     ax.set_xlabel('Meditation State')
-    #     ax.set_ylabel('Interquartile Range')
-    #     ax.set_title('Comparison of Interquartile Range Values')
-    #     ax.legend()
-
-    #     # Show the plot
-    #     plt.show()
-
-    # @staticmethod
-    # def visualize_skewness(pre_skewness, during_skewness, post_skewness):
-    #     # Set up the figure and axes
-    #     fig, ax = plt.subplots(figsize=(10, 6))
-
-    #     # Create the line plots
-    #     x_labels = ['Pre', 'During', 'Post']
-    #     line_x = range(3)
-    #     line_y1 = [pre_skewness, during_skewness, post_skewness]
-    #     ax.plot(line_x, line_y1, color='orange', linewidth=2, linestyle='--', marker='o', label='Skewness')
-
-    #     # Set the labels and title
-    #     ax.set_xticks(line_x)
-    #     ax.set_xticklabels(x_labels)
-    #     ax.set_xlabel('Meditation State')
-    #     ax.set_ylabel('Skewness')
-    #     ax.set_title('Comparison of Skewness Values')
-    #     ax.legend()
-
-    #     # Show the plot
-    #     plt.show()
-
-    # @staticmethod
-    # def visualize_kurtosis(pre_kurtosis, during_kurtosis, post_kurtosis):
-    #     # Set up the figure and axes
-    #     fig, ax = plt.subplots(figsize=(10, 6))
-
-    #     # Create the line plots
-    #     x_labels = ['Pre', 'During', 'Post']
-    #     line_x = range(3)
-    #     line_y1 = [pre_kurtosis, during_kurtosis, post_kurtosis]
-    #     ax.plot(line_x, line_y1, color='magenta', linewidth=2, linestyle='--', marker='o', label='Kurtosis')
-
-    #     # Set the labels and title
-    #     ax.set_xticks(line_x)
-    #     ax.set_xticklabels(x_labels)
-    #     ax.set_xlabel('Meditation State')
-    #     ax.set_ylabel('Kurtosis')
-    #     ax.set_title('Comparison of Kurtosis Values')
-    #     ax.legend()
-
-    #     # Show the plot
-    #     plt.show()
-
-    # @staticmethod
-    # def visualize_range(pre_range, during_range, post_range):
-    #     # Set up the figure and axes
-    #     fig, ax = plt.subplots(figsize=(10, 6))
-
-    #     # Create the line plots
-    #     x_labels = ['Pre', 'During', 'Post']
-    #     line_x = range(3)
-    #     line_y1 = [pre_range, during_range, post_range]
-    #     ax.plot(line_x, line_y1, color='cyan', linewidth=2, linestyle='--', marker='o', label='Range')
-
-    #     # Set the labels and title
-    #     ax.set_xticks(line_x)
-    #     ax.set_xticklabels(x_labels)
-    #     ax.set_xlabel('Meditation State')
-    #     ax.set_ylabel('Range')
-    #     ax.set_title('Comparison of Range Values')
-    #     ax.legend()
-
-    #     # Show the plot
-    #     plt.show()
-
-    # @staticmethod
-    # def visualize_variance(pre_variance, during_variance, post_variance):
-    #     # Set up the figure and axes
-    #     fig, ax = plt.subplots(figsize=(10, 6))
-
-    #     # Create the line plots
-    #     x_labels = ['Pre', 'During', 'Post']
-    #     line_x = range(3)
-    #     line_y1 = [pre_variance, during_variance, post_variance]
-    #     ax.plot(line_x, line_y1, color='brown', linewidth=2, linestyle='--', marker='o', label='Variance')
-
-    #     # Set the labels and title
-    #     ax.set_xticks(line_x)
-    #     ax.set_xticklabels(x_labels)
-    #     ax.set_xlabel('Meditation State')
-    #     ax.set_ylabel('Variance')
-    #     ax.set_title('Comparison of Variance Values')
-    #     ax.legend()
-
-    #     # Show the plot
-    #     plt.show()
-
-    # @staticmethod
-    # def visualize_rms(pre_rms, during_rms, post_rms):
-    #     # Set up the figure and axes
-    #     fig, ax = plt.subplots(figsize=(10, 6))
-
-    #     # Create the line plots
-    #     x_labels = ['Pre', 'During', 'Post']
-    #     line_x = range(3)
-    #     line_y1 = [pre_rms, during_rms, post_rms]
-    #     ax.plot(line_x, line_y1, color='gray', linewidth=2, linestyle='--', marker='o', label='Root Mean Square (RMS)')
-
-    #     # Set the labels and title
-    #     ax.set_xticks(line_x)
-    #     ax.set_xticklabels(x_labels)
-    #     ax.set_xlabel('Meditation State')
-    #     ax.set_ylabel('Root Mean Square (RMS)')
-    #     ax.set_title('Comparison of Root Mean Square (RMS) Values')
-    #     ax.legend()
-
-    #     # Show the plot
-    #     plt.show()
-
-    # # Implement the remaining visualization functions for spectral power, coherence, and fractal dimension.
-    
-    # @staticmethod
-    # def visualize_spectral_power(pre_alpha_power, during_alpha_power, post_alpha_power,
-    #                              pre_beta_power, during_beta_power, post_beta_power):
-    #     # Set up the figure and axes
-    #     fig, ax = plt.subplots(figsize=(10, 6))
-
-    #     # Create the line plots
-    #     x_labels = ['Pre', 'During', 'Post']
-    #     line_x = range(3)
-        
-    #     # Alpha power
-    #     line_y1 = [pre_alpha_power, during_alpha_power, post_alpha_power]
-    #     ax.plot(line_x, line_y1, color='blue', linewidth=2, linestyle='--', marker='o', label='Alpha Power')
-        
-    #     # Beta power
-    #     line_y2 = [pre_beta_power, during_beta_power, post_beta_power]
-    #     ax.plot(line_x, line_y2, color='red', linewidth=2, linestyle='--', marker='o', label='Beta Power')
-
-    #     # Set the labels and title
-    #     ax.set_xticks(line_x)
-    #     ax.set_xticklabels(x_labels)
-    #     ax.set_xlabel('Meditation State')
-    #     ax.set_ylabel('Power')
-    #     ax.set_title('Comparison of Spectral Power (Alpha and Beta) Values')
-    #     ax.legend()
-
-    #     # Show the plot
-    #     plt.show()
-
-    # @staticmethod
-    # def visualize_coherence(pre_coherence, during_coherence, post_coherence):
-    #     # Set up the figure and axes
-    #     fig, ax = plt.subplots(figsize=(10, 6))
-
-    #     # Create the line plots
-    #     x_labels = ['Pre', 'During', 'Post']
-    #     line_x = range(3)
-    #     line_y1 = [pre_coherence, during_coherence, post_coherence]
-    #     ax.plot(line_x, line_y1, color='green', linewidth=2, linestyle='--', marker='o', label='Coherence')
-
-    #     # Set the labels and title
-    #     ax.set_xticks(line_x)
-    #     ax.set_xticklabels(x_labels)
-    #     ax.set_xlabel('Meditation State')
-    #     ax.set_ylabel('Coherence')
-    #     ax.set_title('Comparison of Coherence Values')
-    #     ax.legend()
-
-    #     # Show the plot
-    #     plt.show()
-
-    # @staticmethod
-    # def visualize_fractal_dimension(pre_fractal_dimension, during_fractal_dimension, post_fractal_dimension):
-    #     # Set up the figure and axes
-    #     fig, ax = plt.subplots(figsize=(10, 6))
-
-    #     # Create the line plots
-    #     x_labels = ['Pre', 'During', 'Post']
-    #     line_x = range(3)
-    #     line_y1 = [pre_fractal_dimension, during_fractal_dimension, post_fractal_dimension]
-    #     ax.plot(line_x, line_y1, color='purple', linewidth=2, linestyle='--', marker='o', label='Fractal Dimension')
-
-    #     # Set the labels and title
-    #     ax.set_xticks(line_x)
-    #     ax.set_xticklabels(x_labels)
-    #     ax.set_xlabel('Meditation State')
-    #     ax.set_ylabel('Fractal Dimension')
-    #     ax.set_title('Comparison of Fractal Dimension Values')
-    #     ax.legend()
-
-    #     # Show the plot
-    #     plt.show()
+ 
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats, signal
@@ -601,3 +325,94 @@ class ComparativeVisualizationFactory:
         # Show the plot
         plt.show()
 
+    @staticmethod
+
+    def visualize_multi_person_time_series(num_persons, *data):
+        # Set up the figure and axes
+        fig, ax = plt.subplots(figsize=(10, 6))
+
+        # Define a colormap with enough colors for the number of persons
+        colormap = plt.cm.get_cmap('tab10', num_persons)
+
+        # Plot each time series with a different color from the colormap
+        for i in range(num_persons):
+            person_data = data[i]
+            color = colormap(i)
+            label = f'Person {i+1}'
+            ax.plot(person_data, color=color, label=label)
+
+        # Set the labels and title
+        ax.set_xlabel('Time')
+        ax.set_ylabel('Value')
+        ax.set_title('Comparison of Time Series')
+        ax.legend()
+
+        # Show the plot
+        plt.show()
+
+    @staticmethod
+
+    def visualize_multi_feature_time_series(num_persons, *data):
+        # Set up the figure and axes
+        fig, ax = plt.subplots(figsize=(10, 6))
+
+        # Define a colormap with enough colors for the number of persons
+        colormap = plt.cm.get_cmap('tab10', num_persons)
+
+        # Plot each time series with a different color from the colormap
+        for i in range(num_persons):
+            person_data = data[i]
+            color = colormap(i)
+            label = f'Feature {i+1}'
+            ax.plot(person_data, color=color, label=label)
+
+        # Set the labels and title
+        ax.set_xlabel('Time')
+        ax.set_ylabel('Value')
+        ax.set_title('Comparison of Time Series')
+        ax.legend()
+
+        # Show the plot
+        plt.show()
+
+    @staticmethod
+    def visualize_mean_spec(pre_data, during_data, post_data, fs=None, window='hann', nperseg=256, noverlap=None,
+                       cmap='RdBu_r', scaling='density', x_label='Time [sec]', y_label='Frequency [Hz]',
+                       title=None):
+        # Calculate the mean values
+        pre_mean = np.mean(pre_data)
+        during_mean = np.mean(during_data)
+        post_mean = np.mean(post_data)
+
+        # Set up the figure and axes
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
+
+        # Plot the mean values
+        x_labels = ['Pre', 'During', 'Post']
+        line_x = range(3)
+        line_y = [pre_mean, during_mean, post_mean]
+        ax1.plot(line_x, line_y, color='blue', linewidth=2, linestyle='--', marker='o', label='Mean')
+        ax1.set_xticks(line_x)
+        ax1.set_xticklabels(x_labels)
+        ax1.set_xlabel('Meditation State')
+        ax1.set_ylabel('Mean')
+        ax1.set_title('Comparison of Mean Values')
+        ax1.legend()
+
+        # Calculate the spectrogram of the mean values
+        mean_data = [pre_mean, during_mean, post_mean]
+        if fs is None:
+            fs = 1.0
+        f, t, Sxx = spectrogram(mean_data, fs=fs, window=window, nperseg=nperseg, noverlap=noverlap, scaling=scaling)
+        ax2.pcolormesh(t, f, Sxx, cmap=cmap)
+        ax2.set_ylabel(y_label)
+        ax2.set_xlabel(x_label)
+        if title is not None:
+            ax2.set_title(title)
+        else:
+            ax2.set_title('Spectrogram of Mean Values')
+        ax2.colorbar()
+
+        # Show the plot
+        plt.tight_layout()
+        plt.show()
