@@ -1,6 +1,8 @@
 import numpy as np
 from scipy.stats import ttest_rel, wilcoxon
-# from .cognitive_indexes import calculate_pe,calculate_band_power,calculate_arousal_index, calculate_neural_activity,calculate_engagement
+import pandas as pd
+from scipy import stats
+from brainsurf.cognitive_analysis_module.cognitive_indexes import calculate_arousal_index, calculate_band_power, calculate_engagement, calculate_neural_activity, calculate_pe
 
 def calculate_cognitive_indexes(data_before, data_after):
     """
@@ -15,30 +17,6 @@ def calculate_cognitive_indexes(data_before, data_after):
     - cognitive_indexes_before (numpy.ndarray): Cognitive indexes calculated from data_before.
     - cognitive_indexes_after (numpy.ndarray): Cognitive indexes calculated from data_after.
     """
-
-    def calculate_band_power(freqs, power, bands):
-        band_power = {}
-        for band, f_range in bands.items():
-            idx = np.logical_and(freqs >= f_range[0], freqs <= f_range[1])
-            band_power[band] = np.trapz(power[idx], freqs[idx])
-
-        return band_power
-
-    def calculate_pe(alpha_power, beta_power):
-        pe = beta_power / alpha_power
-        return pe
-
-    def calculate_arousal_index(alpha_power, theta_power):
-        ai = alpha_power / theta_power
-        return ai
-
-    def calculate_neural_activity(delta_power, theta_power, alpha_power, beta_power):
-        na = (delta_power + theta_power) / (alpha_power + beta_power)
-        return na
-
-    def calculate_engagement(alpha_power, theta_power, delta_power):
-        eng = (alpha_power + theta_power) / delta_power
-        return eng
 
     # Extract the necessary data columns from data_before
     freqs_before = data_before['sec']
@@ -114,10 +92,9 @@ def compare_cognitive_indexes(cognitive_indexes_before, cognitive_indexes_after,
 
     return test_statistic, p_value
 
-import pandas as pd
-from scipy import stats
 
-def analyze_eeg_data(pre_merged, post_merged):
+
+def compare_eeg_data_stats(pre_merged, post_merged):
     # Extract the relevant feature columns
     pre_eeg_raw = pre_merged['raw']
     pre_alpha = pre_merged['alpha']
@@ -161,12 +138,8 @@ def analyze_eeg_data(pre_merged, post_merged):
         'P-Value (ANOVA)': [p_value_anova_raw, p_value_anova_alpha, p_value_anova_beta, p_value_anova_theta, p_value_anova_delta],
         'Effect Size': [effect_size_raw, effect_size_alpha, effect_size_beta, effect_size_theta, effect_size_delta]
     })
-
     return results
 
-
-import pandas as pd
-import numpy as np
 
 def analyze_stroop_data(data):
     # Convert the data to a pandas DataFrame for easier analysis
@@ -192,15 +165,20 @@ def analyze_stroop_data(data):
     # Perform t-test for accuracy (without using scipy)
     t_value_acc, p_value_acc = independent_ttest(congruent_acc, incongruent_acc)
 
-    # Print the results
-    print("Response Time Analysis:")
-    print("Average Response Time - Congruent: {:.2f}".format(avg_congruent_rt))
-    print("Average Response Time - Incongruent: {:.2f}".format(avg_incongruent_rt))
-    print("T-Test - Response Time: t-value = {:.2f}, p-value = {:.4f}".format(t_value, p_value))
-    print("\nAccuracy Analysis:")
-    print("Average Accuracy - Congruent: {:.2f}%".format(avg_congruent_acc * 100))
-    print("Average Accuracy - Incongruent: {:.2f}%".format(avg_incongruent_acc * 100))
-    print("T-Test - Accuracy: t-value = {:.2f}, p-value = {:.4f}".format(t_value_acc, p_value_acc))
+    # Store the results in a dictionary
+    results = {
+        "Average Response Time - Congruent": avg_congruent_rt,
+        "Average Response Time - Incongruent": avg_incongruent_rt,
+        "T-Test - Response Time - t-value": t_value,
+        "T-Test - Response Time - p-value": p_value,
+        "Average Accuracy - Congruent": avg_congruent_acc,
+        "Average Accuracy - Incongruent": avg_incongruent_acc,
+        "T-Test - Accuracy - t-value": t_value_acc,
+        "T-Test - Accuracy - p-value": p_value_acc
+    }
+
+    return results
+
 
 def independent_ttest(x, y):
     # Calculate the t-value and p-value for two independent samples

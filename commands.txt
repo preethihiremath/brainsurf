@@ -13,3 +13,13 @@ git push origin master
 ------------------------
 git pull origin master
 ---------------------------
+
+
+---------------------------
+python setup.py sdist
+---------------------------
+
+
+---------------------------
+twine upload dist/* -u preethivhiremath -p Pr@201201 
+---------------------------

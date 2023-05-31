@@ -3,14 +3,10 @@ import pandas as pd
 from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score, mean_squared_error
-from sklearn.model_selection import GridSearchCV
-from sklearn.linear_model import LinearRegression
-from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_squared_error
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import RandomForestRegressor
 import matplotlib.pyplot as plt
-
 def load_data(filepath):
     data = pd.read_csv(filepath)
     print(data.head())
@@ -97,11 +93,3 @@ def visualize_predictions(model, X_test, y_test):
 
     plt.show()
 
-
-if __name__ == '__main__':
-    data = load_data('C:/Users/Preethi V Hiremath/OneDrive/Desktop/Projects/esp/brainsurf/data/eeg_data/sample_data2.csv')
-    preprocessed_data = preprocess_data(data)
-    X_train, X_test, y_train, y_test = split_data(preprocessed_data)
-    model = train_model(X_train, y_train)
-    evaluate_model(model, X_test, y_test)
-    visualize_predictions(model, X_test, y_test)

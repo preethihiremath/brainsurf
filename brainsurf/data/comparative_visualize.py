@@ -2,6 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats, signal
+from sklearn.metrics import pairwise_distances
 
 class ComparativeVisualizationFactory:
     @staticmethod
@@ -303,27 +304,27 @@ class ComparativeVisualizationFactory:
 
         return counts
 
-    @staticmethod
-    def visualize_fractal_dimension(data, scales):
-        counts = calculate_boxcount(data, scales)
-        dimensions = np.log(counts) / np.log(scales)
+    # @staticmethod
+    # def visualize_fractal_dimension(data, scales):
+    #     counts = calculate_boxcount(data, scales)
+    #     dimensions = np.log(counts) / np.log(scales)
 
-        # Set up the figure and axes
-        fig, ax = plt.subplots(figsize=(10, 6))
+    #     # Set up the figure and axes
+    #     fig, ax = plt.subplots(figsize=(10, 6))
 
-        # Create the line plot
-        ax.plot(scales, dimensions, color='blue', linewidth=2, marker='o', label='Fractal Dimension')
+    #     # Create the line plot
+    #     ax.plot(scales, dimensions, color='blue', linewidth=2, marker='o', label='Fractal Dimension')
 
-        # Set the labels and title
-        ax.set_xscale('log')
-        ax.set_yscale('log')
-        ax.set_xlabel('Scale')
-        ax.set_ylabel('Fractal Dimension')
-        ax.set_title('Fractal Dimension Analysis')
-        ax.legend()
+    #     # Set the labels and title
+    #     ax.set_xscale('log')
+    #     ax.set_yscale('log')
+    #     ax.set_xlabel('Scale')
+    #     ax.set_ylabel('Fractal Dimension')
+    #     ax.set_title('Fractal Dimension Analysis')
+    #     ax.legend()
 
-        # Show the plot
-        plt.show()
+    #     # Show the plot
+    #     plt.show()
 
     @staticmethod
 
@@ -375,44 +376,44 @@ class ComparativeVisualizationFactory:
         # Show the plot
         plt.show()
 
-    @staticmethod
-    def visualize_mean_spec(pre_data, during_data, post_data, fs=None, window='hann', nperseg=256, noverlap=None,
-                       cmap='RdBu_r', scaling='density', x_label='Time [sec]', y_label='Frequency [Hz]',
-                       title=None):
-        # Calculate the mean values
-        pre_mean = np.mean(pre_data)
-        during_mean = np.mean(during_data)
-        post_mean = np.mean(post_data)
+    # @staticmethod
+    # def visualize_mean_spec(pre_data, during_data, post_data, fs=None, window='hann', nperseg=256, noverlap=None,
+    #                    cmap='RdBu_r', scaling='density', x_label='Time [sec]', y_label='Frequency [Hz]',
+    #                    title=None):
+    #     # Calculate the mean values
+    #     pre_mean = np.mean(pre_data)
+    #     during_mean = np.mean(during_data)
+    #     post_mean = np.mean(post_data)
 
-        # Set up the figure and axes
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
+    #     # Set up the figure and axes
+    #     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
 
-        # Plot the mean values
-        x_labels = ['Pre', 'During', 'Post']
-        line_x = range(3)
-        line_y = [pre_mean, during_mean, post_mean]
-        ax1.plot(line_x, line_y, color='blue', linewidth=2, linestyle='--', marker='o', label='Mean')
-        ax1.set_xticks(line_x)
-        ax1.set_xticklabels(x_labels)
-        ax1.set_xlabel('Meditation State')
-        ax1.set_ylabel('Mean')
-        ax1.set_title('Comparison of Mean Values')
-        ax1.legend()
+    #     # Plot the mean values
+    #     x_labels = ['Pre', 'During', 'Post']
+    #     line_x = range(3)
+    #     line_y = [pre_mean, during_mean, post_mean]
+    #     ax1.plot(line_x, line_y, color='blue', linewidth=2, linestyle='--', marker='o', label='Mean')
+    #     ax1.set_xticks(line_x)
+    #     ax1.set_xticklabels(x_labels)
+    #     ax1.set_xlabel('Meditation State')
+    #     ax1.set_ylabel('Mean')
+    #     ax1.set_title('Comparison of Mean Values')
+    #     ax1.legend()
 
-        # Calculate the spectrogram of the mean values
-        mean_data = [pre_mean, during_mean, post_mean]
-        if fs is None:
-            fs = 1.0
-        f, t, Sxx = spectrogram(mean_data, fs=fs, window=window, nperseg=nperseg, noverlap=noverlap, scaling=scaling)
-        ax2.pcolormesh(t, f, Sxx, cmap=cmap)
-        ax2.set_ylabel(y_label)
-        ax2.set_xlabel(x_label)
-        if title is not None:
-            ax2.set_title(title)
-        else:
-            ax2.set_title('Spectrogram of Mean Values')
-        ax2.colorbar()
+    #     # Calculate the spectrogram of the mean values
+    #     mean_data = [pre_mean, during_mean, post_mean]
+    #     if fs is None:
+    #         fs = 1.0
+    #     f, t, Sxx = spectrogram(mean_data, fs=fs, window=window, nperseg=nperseg, noverlap=noverlap, scaling=scaling)
+    #     ax2.pcolormesh(t, f, Sxx, cmap=cmap)
+    #     ax2.set_ylabel(y_label)
+    #     ax2.set_xlabel(x_label)
+    #     if title is not None:
+    #         ax2.set_title(title)
+    #     else:
+    #         ax2.set_title('Spectrogram of Mean Values')
+    #     ax2.colorbar()
 
-        # Show the plot
-        plt.tight_layout()
-        plt.show()
+    #     # Show the plot
+    #     plt.tight_layout()
+    #     plt.show()

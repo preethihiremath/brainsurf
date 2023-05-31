@@ -1,9 +1,14 @@
 from setuptools import setup, find_packages
 
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
 setup(
     name='brainsurf',
-    version='0.0.2',
+    version='3.0.0',
     description='EEG Signal Processing Library',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     author='preethivhiremath',
     author_email='preethivhiremath.vh@gmail.com',
     url='https://github.com/preethihiremath/brainsurf',
@@ -13,7 +18,7 @@ setup(
         'scipy',
         'matplotlib',
         'mne',
-        'pyabf'
+        'pyabf',
         'nolds',
     ],
     classifiers=[
