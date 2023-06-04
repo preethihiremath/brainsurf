@@ -1,17 +1,34 @@
 import pandas as pd
 import pyedflib
-import h5py 
+import mne
 import numpy as np
 from scipy.signal import welch
-
-
 class EEGData:
     def __init__(self, **kwargs):
         self.data = pd.DataFrame(kwargs)
 
     def __len__(self):
         return len(self.data)
+    def drop_columns(self, columns):
+        """
+        Drop specified columns from the EEGData object.
 
+        Parameters:
+            columns (str or list): The column(s) to drop.
+
+        Returns:
+            None
+        """
+        if isinstance(columns, str):
+            columns = [columns]  # Convert single column name to a list
+
+        existing_columns = list(self.data.columns)
+        columns_to_drop = [col for col in columns if col in existing_columns]
+
+        if columns_to_drop:
+            self.data.drop(columns=columns_to_drop, inplace=True)
+        else:
+            print("Specified column(s) not found in the EEGData object.")
     def get_data(self):
         return self.data
 
@@ -195,9 +212,13 @@ class EEGData:
 
 class EEGDataFactory:
     def create_eeg_data(self, input_file):
-
+        if isinstance(input_file, pd.DataFrame):
+            eeg_data = EEGData()
+            for column in input_file.columns:
+                eeg_data.add_data(column, input_file[column])
+            return eeg_data
         #CSV
-        if input_file.endswith('.csv'):
+        elif input_file.endswith('.csv'):
             data = self.parse_csv(input_file)
             if 'sec' in data.columns and 'EEG' in data.columns and 'alpha' in data.columns and 'beta' in data.columns and 'delta' in data.columns and 'theta ' in data.columns:
                 # CSV data with sec, alpha, beta,  delta and theta columns            
@@ -217,19 +238,12 @@ class EEGDataFactory:
             return EEGData(channel_names=channel_names, raw_data=raw_data)
     
         elif input_file.endswith('.mff'):
-            data = self.parse_mff(input_file)
-           
-            if 'sec' in data.columns and 'EEG' in data.columns and 'alpha' in data.columns and 'beta' in data.columns and 'delta' in data.columns and 'theta ' in data.columns:
-                    # CSV data with sec, alpha, beta, and gamma columns            
-                    return EEGData(sec=data['sec'], raw=data['EEG'], alpha=data['alpha'], beta=data['beta'], theta=data['theta '], delta =data['delta'])
-            elif 'sec' in data.columns:
-                    # CSV data with raw and time columns
-                    return EEGData(time=data['sec'], raw=data['EEG'])
-            elif 'EEG' in data.col:
-                    # CSV data with only raw data
-                    return EEGData(raw=data['EEG'])
-            else:
-                return EEGData(sec=data['time'], raw=data['EEG'], channel_names=channel_names)
+            raw = mne.io.read_raw_egi(input_file)
+            eeg_data = raw.get_data()
+            time_points = raw.times
+            baseline = pd.DataFrame(data=eeg_data.T, columns=raw.ch_names)
+            baseline['sec'] = time_points
+            return baseline
             # Create EEGData object with the extracted data           
         
         elif input_file.endswith('.xlsx'):
@@ -246,17 +260,8 @@ class EEGDataFactory:
                     return EEGData(raw=data['EEG'])
         else:
             raise ValueError("Invalid file format. Only CSV, EDF, MFF, and XLSX files are supported.")
- 
-  
-    def parse_mff(self, input_file):
-        # Implement your MFF file parsing logic here
-        with h5py.File(input_file, 'r') as f:
-            sec = f['/path/to/timestamps'][()]  # Replace '/path/to/timestamps' with the actual dataset path
-            eeg_signals = f['/path/to/eeg_signals'][()]  # Replace '/path/to/eeg_signals' with the actual dataset path
-            channel_names = f['/path/to/channel_names'][()]  # Replace '/path/to/channel_names' with the actual dataset path
-        
-        data = {'sec': sec, 'eeg_signals': eeg_signals, 'channel_names': channel_names}
-        return data
+    
+    
 
     def parse_csv(self, input_file):
         data = pd.read_csv(input_file)

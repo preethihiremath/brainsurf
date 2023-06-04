@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<historyEntries xmlns="http://www.egi.com/history_mff" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <entry>
+        <tool>
+            <name>Save Selection</name>
+            <method>File Export</method>
+            <version>5.4.2</version>
+            <beginTime>2020-12-28T13:44:16.081789+05:30</beginTime>
+            <endTime>2020-12-28T13:44:16.354682+05:30</endTime>
+            <sourceFiles>
+                <filePath>/Users/deepeshwarsingh/Desktop/Hertfulness meditation_remaining/Paravathi/&lt;Paravathi&gt; 20190915 0919.mff</filePath>
+            </sourceFiles>
+            <settings>
+                <setting>Start Time: 2019-09-15T09:27:58.948000+05:50</setting>
+                <setting>End Time 2019-09-15T09:32:58.948000+05:50</setting>
+            </settings>
+        </tool>
+    </entry>
+</historyEntries>
