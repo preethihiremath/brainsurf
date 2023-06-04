@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy import signal
-
+import numpy as np
 import nolds
 
 def calculate_mean(data):
@@ -10,7 +10,8 @@ def calculate_mean(data):
 def calculate_variance(data):
     return np.nanvar(data)
 
-import numpy as np
+def calculate_std(data):
+    return np.std(data)
 
 def calculate_skewness(data):
     """

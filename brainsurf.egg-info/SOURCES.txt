@@ -20,6 +20,7 @@ brainsurf/cognitive_analysis_module/cognitive_indexes.py
 brainsurf/data/__init__.py
 brainsurf/data/comparative_visualize.py
 brainsurf/data/csv.py
+brainsurf/data/df.py
 brainsurf/data/edf.py
 brainsurf/data/eeg_data.py
 brainsurf/data/eeg_data_visualization.py

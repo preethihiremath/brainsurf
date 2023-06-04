@@ -328,7 +328,7 @@ class ComparativeVisualizationFactory:
 
     @staticmethod
 
-    def visualize_multi_person_time_series(num_persons, *data):
+    def visualize_multi_person_time_series(num_persons, *data, xlabel="Time", ylabel="Value"):
         # Set up the figure and axes
         fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -343,17 +343,16 @@ class ComparativeVisualizationFactory:
             ax.plot(person_data, color=color, label=label)
 
         # Set the labels and title
-        ax.set_xlabel('Time')
-        ax.set_ylabel('Value')
-        ax.set_title('Comparison of Time Series')
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+        ax.set_title('Comparison Graph')
         ax.legend()
 
         # Show the plot
         plt.show()
 
     @staticmethod
-
-    def visualize_multi_feature_time_series(num_persons, *data):
+    def visualize_multi_feature_time_series(num_persons, xlabel='Time', ylabel='Value', title="Comparison of Time Series", *data,):
         # Set up the figure and axes
         fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -368,9 +367,9 @@ class ComparativeVisualizationFactory:
             ax.plot(person_data, color=color, label=label)
 
         # Set the labels and title
-        ax.set_xlabel('Time')
-        ax.set_ylabel('Value')
-        ax.set_title('Comparison of Time Series')
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+        ax.set_title(title)
         ax.legend()
 
         # Show the plot

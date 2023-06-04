@@ -106,15 +106,13 @@ def compare_eeg_data_stats(pre_merged, post_merged):
     post_alpha = post_merged['alpha']
     post_beta = post_merged['beta']
     post_theta = post_merged['theta']
-    post_delta = post_merged['delta']
-
+    post_delta = post_merged['delta'] 
     # Perform t-tests for each feature
     t_statistic_raw, p_value_raw = stats.ttest_ind(pre_eeg_raw, post_eeg_raw)
     t_statistic_alpha, p_value_alpha = stats.ttest_ind(pre_alpha, post_alpha)
     t_statistic_beta, p_value_beta = stats.ttest_ind(pre_beta, post_beta)
     t_statistic_theta, p_value_theta = stats.ttest_ind(pre_theta, post_theta)
     t_statistic_delta, p_value_delta = stats.ttest_ind(pre_delta, post_delta)
-
     # Perform ANOVA for each feature
     f_statistic_raw, p_value_anova_raw = stats.f_oneway(pre_eeg_raw, post_eeg_raw)
     f_statistic_alpha, p_value_anova_alpha = stats.f_oneway(pre_alpha, post_alpha)
