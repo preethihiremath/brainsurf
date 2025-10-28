@@ -1,24 +1,20 @@
 ---
 title: "BrainSurf: An Open-Source Python Library for EEG Signal Analysis in Meditation Research"
-tags:
-  - Python
-  - EEG
-  - Meditation
-  - Neuroscience
-  - Signal Processing
 authors:
-  - name: Preethi V Hiremath
+  - name: Preethi V. Hiremath
     affiliation: 1
-    orcid: 0009-0002-8984-3049
-  - name: Rakshitha B R
+    orcid: 0000-0000-0000-0000
+    email: preethivhiremath.vh@gmail.com
+  - name: Rakshitha B. R
     affiliation: 1
+    email: rakshitharavishankar2000@gmail.com
   - name: Rashi Prasad
     affiliation: 1
+    email: rashiprasad1@gmail.com
 affiliations:
   - name: Department of Information Science and Engineering, BMS College of Engineering, Bengaluru, India
     index: 1
-date: 2025-10-26
-bibliography: paper.bib
+date: 2025-10-28
 ---
 
 # Summary
@@ -61,7 +57,7 @@ BrainSurf provides a complete EEG analysis workflow:
 from brainsurf import preprocess, extract_features
 
 # Preprocess EEG data
-data = preprocess("subject01.edf", highpass=1, lowpass=40)
+data = preprocess("subject01.csv", highpass=1, lowpass=40)
 
 # Extract frequency features
 features = extract_features(data, bands=['alpha', 'theta', 'beta'])
