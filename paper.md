@@ -3,7 +3,7 @@ title: "BrainSurf: An Open-Source Python Library for EEG Signal Analysis in Medi
 authors:
   - name: Preethi V. Hiremath
     affiliation: 1
-    orcid: 0000-0000-0000-0000
+    orcid: 0009-0002-8984-3049
     email: preethivhiremath.vh@gmail.com
   - name: Rakshitha B. R
     affiliation: 1
