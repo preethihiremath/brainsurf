@@ -42,6 +42,12 @@ BrainSurf addresses this gap by offering a Python-based, extensible, and open-so
 - Machine learning practitioners building EEG-based classification models,
 - Undergraduate and postgraduate students learning EEG signal processing.
 
+# State of the Field
+
+Meditation EEG studies typically rely on a mix of general-purpose preprocessing tools and researcher-written analysis code. Packages such as MNE-Python [@gramfort2013] and EEGLAB [@delorme2004] provide strong foundations for filtering, ICA-based artifact removal, and common EEG representations, but they do not bundle meditation-specific, cognition-oriented feature sets in a way that can be reused consistently across projects. In practice, researchers still need to implement custom workflows to compute cognitive indices (e.g., alpha asymmetry, engagement or relaxation ratios, and nonlinear complexity measures) and to adapt these computations to the particular structure of meditation recordings (pre/post comparisons and continuous resting-state segments).
+
+This gap matters because small differences in preprocessing parameters, epoching choices, and feature definitions can materially affect reported effects. BrainSurf’s contribution is to package this domain-specific analysis logic into a focused Python library with a modular, reproducible API—so that labs can run comparable pipelines, more easily interpret outputs, and share code patterns rather than duplicating ad-hoc scripts.
+
 # Software Design
 
 ## Build vs. Contribute Justification
@@ -136,6 +142,3 @@ The authors did not use generative AI tools in the development of the BrainSurf 
 We thank **Prof. Rajeshwari K**, Department of Information Science and Engineering, BMS College of Engineering, for supervision and guidance during development. We also acknowledge contributors to the open-source EEG analysis community whose prior work inspired this project.
 
 # References
-- Swati Singh, Vinay Gupta, Laxmidhar Behera. *"Meditation and Cognitive Enhancement: A Machine Learning-Based Classification Using EEG."* Cognitive Neurodynamics, 2022.  
-- Mallikarjun A. Hadli, Nikith K. Kottary, Shwetha Baliga. *"Detection and Analysis of EEG Signals Before and After Meditation."* International Journal of Engineering Research, 2020.  
-- Helané Wahbeh, Amira Sagher, Frederick Travis. *"A Systematic Review of Transcendent States Across Meditation and Contemplative Traditions."* Frontiers in Human Neuroscience, 2018.
