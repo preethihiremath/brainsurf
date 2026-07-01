@@ -1,0 +1,14 @@
+astropy
+matplotlib
+mne
+nolds
+numpy
+openpyxl
+pandas
+pyEDFlib
+PyWavelets
+scikit-learn
+scipy
+seaborn
+streamlit
+tensorflow

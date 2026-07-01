@@ -1,0 +1,30 @@
+participant,session_state,modality,path,columns,rows,source_notes
+adarsh,pre_meditation,EEG CSV,brainsurf/data/samples/cohort/adarsh/eeg/pre_meditation.csv,sec;EEG,14800,University cohort
+adarsh,during_meditation,EEG CSV,brainsurf/data/samples/cohort/adarsh/eeg/during_meditation.csv,sec;EEG,62557,University cohort
+adarsh,post_meditation,EEG CSV,brainsurf/data/samples/cohort/adarsh/eeg/post_meditation.csv,sec;EEG,12400,University cohort
+adarsh,pre_cognitive,EEG CSV,brainsurf/data/samples/cohort/adarsh/cognitive/pre_cognitive_eeg.csv,sec;EEG,24066,University cohort
+adarsh,post_cognitive,EEG CSV,brainsurf/data/samples/cohort/adarsh/cognitive/post_cognitive_eeg.csv,sec;EEG,21520,University cohort
+adarsh,pre_cognitive_with_id,EEG CSV,brainsurf/data/samples/cohort/adarsh/cognitive/pre_cognitive_eeg_with_id.csv,sec;EEG;ID,24066,University cohort
+adarsh,post_cognitive_with_id,EEG CSV,brainsurf/data/samples/cohort/adarsh/cognitive/post_cognitive_eeg_with_id.csv,sec;EEG;ID,21520,University cohort
+adarsh,pre_stroop,Stroop CSV,brainsurf/data/samples/cohort/adarsh/stroop/pre_stroop.csv,color1;color2;Congruent;Response Time;Accuracy;Trial;Block;ID,40,University cohort behavioural Stroop data
+adarsh,post_stroop,Stroop CSV,brainsurf/data/samples/cohort/adarsh/stroop/post_stroop.csv,Color1;Color2;Congruent;Response Time;Accuracy;Block;Trial,40,University cohort behavioural Stroop data
+adarsh,post_stroop_with_id,Stroop CSV,brainsurf/data/samples/cohort/adarsh/stroop/post_stroop_with_id.csv,ID;color1;color2;Congruent;Response Time;Accuracy;Trial;Block,40,University cohort behavioural Stroop data
+adarsh,ml_training,EEG CSV,brainsurf/data/samples/cohort/adarsh/ml/ml_class.csv,EEG;State,101256,Labelled EEG ML sample
+adarsh,ml_external_eval,EEG CSV,brainsurf/data/samples/cohort/adarsh/ml/ani_ml.csv,Time;EEG;State,98692,Labelled EEG ML sample
+anirudh,pre_meditation,EEG CSV,brainsurf/data/samples/cohort/anirudh/eeg/pre_meditation.csv,sec;EEG,36356,University cohort; sec added at assumed 200 Hz
+anirudh,during_meditation,EEG CSV,brainsurf/data/samples/cohort/anirudh/eeg/during_meditation.csv,sec;EEG,62044,University cohort; sec added at assumed 200 Hz
+anirudh,post_meditation,EEG CSV,brainsurf/data/samples/cohort/anirudh/eeg/post_meditation.csv,sec;EEG,45256,University cohort; sec added at assumed 200 Hz
+yogesh,pre_meditation,EEG CSV,brainsurf/data/samples/cohort/yogesh/eeg/pre_meditation.csv,sec;EEG,32670,University cohort; sec added at assumed 200 Hz
+yogesh,post_meditation,EEG CSV,brainsurf/data/samples/cohort/yogesh/eeg/post_meditation.csv,sec;EEG,33521,University cohort; sec added at assumed 200 Hz
+external,mantra_meditation,EEG spectral CSV,brainsurf/data/samples/mantra_meditation/sample_data.csv,sec;EEG;alpha;beta;delta;theta ,7141,External source; left unchanged
+external,mantra_meditation,EEG spectral CSV,brainsurf/data/samples/mantra_meditation/sample_data2.csv,sec;EEG;alpha;beta;delta;theta,5992,External source; left unchanged
+sample,reference_baseline,EEG CSV,brainsurf/data/samples/reference/baseline.csv,EEG;sec,75000,Reference/demo file
+sample,reference_data,EEG CSV,brainsurf/data/samples/reference/data.csv,EEG;sec,75000,Reference/demo file
+sample,reference_meditating,EEG CSV,brainsurf/data/samples/reference/meditating.csv,FP2-F4;,153659,Reference/demo file
+sample,reference_thinking,EEG CSV,brainsurf/data/samples/reference/thinking.csv,FP2-F4;,153659,Reference/demo file
+sample,demo_csv,EEG spectral CSV,brainsurf/data/samples/reference/sample_data.csv,sec;EEG;alpha;beta;delta;theta,7141,Reference/demo file
+sample,demo_edf,EDF,brainsurf/data/samples/reference/sample_data.edf,EDF,,Reference/demo file
+sample,demo_mff_placeholder,MFF placeholder,brainsurf/data/samples/reference/sample_data.mff,MFF,,Reference/demo file
+sample,demo_xlsx,XLSX,brainsurf/data/samples/reference/sample_data.xlsx,XLSX,,Reference/demo file
+sample,reference_acq,ACQ,brainsurf/data/samples/reference/varun_post_2023_L03.acq,ACQ,,Reference/demo file
+sample,mff_reference,MFF directory,brainsurf/data/samples/reference/BS.mff,MFF directory,,EGI MFF reference sample

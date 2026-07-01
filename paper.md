@@ -123,7 +123,7 @@ vis.plot_power_spectrum(freqs, psd)
 
 BrainSurf was validated using EEG datasets collected from guided meditation sessions involving 20 meditators and 11 non-meditators. Analysis using BrainSurf's preprocessing and spectral analysis pipeline showed a statistically significant increase in alpha and theta band power after meditation, consistent with enhanced relaxation and focus reported in the literature [@wahbeh2018; @hadli2020].
 
-The Jupyter notebooks included in the repository (`demo.ipynb`, `brainSurf_Cognitive.ipynb`, `prePost.ipynb`, `med_nonmed.ipynb`) document this analysis end-to-end, from raw EEG loading through preprocessing and cognitive index extraction to visualisation, providing fully reproducible reference analyses.
+The Jupyter notebooks included in the repository (`notebooks/demos/demo.ipynb`, `notebooks/cognitive/brainSurf_Cognitive.ipynb`, `notebooks/meditation/prePost.ipynb`, `notebooks/meditation/med_nonmed.ipynb`) document this analysis end-to-end, from raw EEG loading through preprocessing and cognitive index extraction to visualisation, providing fully reproducible reference analyses.
 
 # Research Impact Statement
 
