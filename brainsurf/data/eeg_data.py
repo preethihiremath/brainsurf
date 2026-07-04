@@ -1,10 +1,10 @@
 import pandas as pd
-import pyedflib
-import mne
 import numpy as np
 from scipy.signal import welch
 class EEGData:
-    def __init__(self, **kwargs):
+    def __init__(self, sampling_frequency=None, signal_columns=None, **kwargs):
+        self.sampling_frequency = sampling_frequency
+        self.signal_columns = signal_columns or []
         self.data = pd.DataFrame(kwargs)
 
     def __len__(self):
@@ -110,102 +110,46 @@ class EEGData:
         else:
             raise KeyError(f"Key '{key}' does not exist in the EEGData object.")
         
-    def extract_frequency_bands(self):
-        if 'raw' in self.data and 'sec' in self.data:
-            raw_data = self.data['raw']
-            sec_data = self.data['sec']
-            
-            # Perform extraction of frequency bands from raw data if they don't exist
-            if 'alpha' not in self.data:
-                epoch_length = 1000  # Length of each epoch in milliseconds
-                num_epochs = len(raw_data) // epoch_length
-                pre_epochs = np.split(raw_data[:num_epochs * epoch_length], num_epochs)
-                
-                pre_features = []
-                
-                for epoch in pre_epochs:
-                    f, psd = welch(epoch, fs=128)  # Adjust fs (sampling frequency) as per your data
-                    
-                    # Check if the frequency range contains data points
-                    alpha_psd = psd[(f >= 8) & (f <= 13)]
-                    alpha_power = np.mean(alpha_psd) if alpha_psd.any() else np.nan
-                    pre_features.append(alpha_power)
-                
-                # Make sure the extracted features have the same length as the original data
-                pre_features += [np.nan] * (len(raw_data) - len(pre_features))
-                
-                self.data['alpha'] = pre_features
-                        
-            if 'beta' not in self.data:
-                pre_features = []
-                
-                for epoch in pre_epochs:
-                    f, psd = welch(epoch, fs=128)  # Adjust fs (sampling frequency) as per your data
-                    
-                    # Check if the frequency range contains data points
-                    beta_psd = psd[(f >= 13) & (f <= 30)]
-                    beta_power = np.mean(beta_psd) if beta_psd.any() else np.nan
-                    pre_features.append(beta_power)
-                
-                # Make sure the extracted features have the same length as the original data
-                pre_features += [np.nan] * (len(raw_data) - len(pre_features))
-                
-                self.data['beta'] = pre_features
-            
-            if 'delta' not in self.data:
-                pre_features = []
-                
-                for epoch in pre_epochs:
-                    f, psd = welch(epoch, fs=128)  # Adjust fs (sampling frequency) as per your data
-                    
-                    # Check if the frequency range contains data points
-                    delta_psd = psd[(f >= 1) & (f <= 4)]
-                    delta_power = np.mean(delta_psd) if delta_psd.any() else np.nan
-                    pre_features.append(delta_power)
-                
-                # Make sure the extracted features have the same length as the original data
-                pre_features += [np.nan] * (len(raw_data) - len(pre_features))
-                
-                self.data['delta'] = pre_features
-            
-            if 'theta' not in self.data:
-                pre_features = []
-                
-                for epoch in pre_epochs:
-                    f, psd = welch(epoch, fs=128)  # Adjust fs (sampling frequency) as per your data
-                    
-                    # Check if the frequency range contains data points
-                    theta_psd = psd[(f >= 4) & (f <= 8)]
-                    theta_power = np.mean(theta_psd) if theta_psd.any() else np.nan
-                    pre_features.append(theta_power)
-                
-                # Make sure the extracted features have the same length as the original data
-                pre_features += [np.nan] * (len(raw_data) - len(pre_features))
-                
-                self.data['theta'] = pre_features
+    def extract_frequency_bands(self, fs=None, epoch_size=1000):
+        if 'raw' not in self.data:
+            raise ValueError("Required key 'raw' is missing in the EEGData object.")
 
-            if 'gamma' not in self.data:
-                pre_features = []
-                
-                for epoch in pre_epochs:
-                    f, psd = welch(epoch, fs=128)  # Adjust fs (sampling frequency) as per your data
-                    
-                    # Check if the frequency range contains data points
-                    gamma_psd = psd[(f >= 30) & (f <= 50)]
-                    gamma_power = np.mean(gamma_psd) if gamma_psd.any() else np.nan
-                    pre_features.append(gamma_power)
-                
-                # Make sure the extracted features have the same length as the original data
-                pre_features += [np.nan] * (len(raw_data) - len(pre_features))
-                
-                self.data['gamma'] = pre_features
+        if fs is None:
+            fs = self.sampling_frequency or 128
 
-            
-            # Repeat the above code for other frequency bands (beta, theta, delta, gamma)
-            # Adjust the frequency ranges and feature extraction accordingly
-            
-        else:
-            raise ValueError("Required keys 'raw' and 'sec' are missing in the EEGData object.")
+        numeric_raw = pd.to_numeric(self.data['raw'], errors='coerce')
+        raw_data = numeric_raw.dropna().to_numpy()
+        if len(raw_data) == 0:
+            raise ValueError("Raw EEG data must contain numeric values.")
+
+        epoch_samples = max(2, int(round(epoch_size)))
+        bands = {
+            'delta': (1, 4),
+            'theta': (4, 8),
+            'alpha': (8, 13),
+            'beta': (13, 30),
+            'gamma': (30, 50),
+        }
+
+        for band, (low, high) in bands.items():
+            if band in self.data:
+                continue
+
+            features = np.full(len(self.data), np.nan)
+            clean_index = numeric_raw.notna().to_numpy().nonzero()[0]
+
+            for start in range(0, len(raw_data), epoch_samples):
+                stop = min(start + epoch_samples, len(raw_data))
+                epoch = raw_data[start:stop]
+                if len(epoch) < 2:
+                    continue
+
+                f, psd = welch(epoch, fs=fs, nperseg=min(256, len(epoch)))
+                band_psd = psd[(f >= low) & (f <= high)]
+                band_power = np.mean(band_psd) if band_psd.size else np.nan
+                features[clean_index[start:stop]] = band_power
+
+            self.data[band] = features
 
 
 
@@ -213,31 +157,25 @@ class EEGData:
 class EEGDataFactory:
     def create_eeg_data(self, input_file):
         if isinstance(input_file, pd.DataFrame):
-            eeg_data = EEGData()
-            for column in input_file.columns:
-                eeg_data.add_data(column, input_file[column])
-            return eeg_data
+            return self.create_tabular_eeg_data(input_file)
+
+        input_path = str(input_file)
+        extension = input_path.lower()
         #CSV
-        elif input_file.endswith('.csv'):
+        if extension.endswith('.csv'):
             data = self.parse_csv(input_file)
-            if 'sec' in data.columns and 'EEG' in data.columns and 'alpha' in data.columns and 'beta' in data.columns and 'delta' in data.columns and 'theta ' in data.columns:
-                # CSV data with sec, alpha, beta,  delta and theta columns            
-                return EEGData(sec=data['sec'], raw=data['EEG'], alpha=data['alpha'], beta=data['beta'], theta=data['theta '], delta =data['delta'])
-            elif 'sec' in data.columns:
-                # CSV data with raw and sec columns
-                return EEGData(sec=data['sec'], raw=data['EEG'])
-            else:
-                # CSV data with only raw data
-                return EEGData(raw=data['EEG'])
+            return self.create_tabular_eeg_data(data)
         #EDF
-        elif input_file.endswith('.edf'):
+        elif extension.endswith('.edf'):
             # Parse EDF data
             data = self.parse_edf(input_file)
             channel_names = data['channel_names']
             raw_data = data['raw_data']
             return EEGData(channel_names=channel_names, raw_data=raw_data)
     
-        elif input_file.endswith('.mff'):
+        elif extension.endswith('.mff'):
+            import mne
+
             raw = mne.io.read_raw_egi(input_file)
             eeg_data = raw.get_data()
             time_points = raw.times
@@ -246,20 +184,106 @@ class EEGDataFactory:
             return baseline
             # Create EEGData object with the extracted data           
         
-        elif input_file.endswith('.xlsx'):
+        elif extension.endswith('.xlsx') or extension.endswith('.xls'):
             data = self.parse_xlsx(input_file)
-            # Extract relevant information from the XLSX data
-            if 'sec' in data.columns and 'EEG' in data.columns and 'alpha' in data.columns and 'beta' in data.columns and 'delta' in data.columns and 'theta ' in data.columns:
-                    # CSV data with sec, alpha, beta, and gamma columns            
-                    return EEGData(sec=data['sec'], raw=data['EEG'], alpha=data['alpha'], beta=data['beta'], theta=data['theta '], delta =data['delta'])
-            elif 'sec' in data.columns:
-                    # CSV data with raw and time columns
-                    return EEGData(sec=data['sec'], raw=data['EEG'])
-            else:
-                    # CSV data with only raw data
-                    return EEGData(raw=data['EEG'])
+            return self.create_tabular_eeg_data(data)
         else:
-            raise ValueError("Invalid file format. Only CSV, EDF, MFF, and XLSX files are supported.")
+            raise ValueError("Invalid file format. Only CSV, Excel, EDF, and MFF files are supported.")
+
+    def create_tabular_eeg_data(self, data):
+        data = data.copy()
+        data.columns = [column.strip() if isinstance(column, str) else column for column in data.columns]
+
+        column_lookup = {self.normalize_column_name(column): column for column in data.columns}
+        time_column = self.find_first_column(
+            column_lookup,
+            ['sec', 'secs', 'second', 'seconds', 'time', 'time_s', 'timestamp', 'timestamps', 't'],
+        )
+        signal_columns = self.find_signal_columns(data, column_lookup, time_column)
+        sampling_frequency = self.estimate_sampling_frequency(data[time_column]) if time_column is not None else None
+
+        eeg_kwargs = {}
+        if time_column is not None:
+            eeg_kwargs['sec'] = pd.to_numeric(data[time_column], errors='coerce')
+
+        channel_frame = data[signal_columns].apply(pd.to_numeric, errors='coerce')
+        if len(signal_columns) == 1:
+            eeg_kwargs['raw'] = channel_frame[signal_columns[0]]
+        else:
+            eeg_kwargs['raw'] = channel_frame.mean(axis=1)
+            for column in signal_columns:
+                eeg_kwargs[column] = channel_frame[column]
+
+        for band in ['alpha', 'beta', 'delta', 'theta', 'gamma']:
+            band_column = column_lookup.get(band)
+            if band_column is not None:
+                eeg_kwargs[band] = pd.to_numeric(data[band_column], errors='coerce')
+
+        eeg_data = EEGData(
+            sampling_frequency=sampling_frequency,
+            signal_columns=list(signal_columns),
+            **eeg_kwargs,
+        )
+        eeg_data.extract_frequency_bands(fs=sampling_frequency)
+        return eeg_data
+
+    def find_signal_columns(self, data, column_lookup, time_column=None):
+        primary_signal = self.find_first_column(
+            column_lookup,
+            ['eeg', 'raw', 'signal', 'value', 'amplitude', 'voltage', 'microvolts', 'uv'],
+        )
+        if primary_signal is not None:
+            return [primary_signal]
+
+        numeric_columns = list(data.select_dtypes(include=[np.number]).columns)
+        excluded_columns = {time_column}
+        excluded_columns.update(
+            column_lookup[name]
+            for name in [
+                'alpha',
+                'beta',
+                'delta',
+                'theta',
+                'gamma',
+                'id',
+                'subject',
+                'participant',
+                'trial',
+                'event',
+                'label',
+                'class',
+                'target',
+            ]
+            if name in column_lookup
+        )
+        signal_columns = [column for column in numeric_columns if column not in excluded_columns]
+        if signal_columns:
+            return signal_columns
+
+        raise ValueError(
+            "Tabular EEG data must include an EEG/raw/signal column or at least one numeric EEG channel."
+        )
+
+    def find_first_column(self, column_lookup, names):
+        for name in names:
+            if name in column_lookup:
+                return column_lookup[name]
+        return None
+
+    def normalize_column_name(self, column):
+        return str(column).strip().lower().replace(' ', '_').replace('-', '_')
+
+    def estimate_sampling_frequency(self, timestamps):
+        timestamps = pd.to_numeric(timestamps, errors='coerce').dropna().to_numpy()
+        if len(timestamps) < 2:
+            return None
+
+        time_diff = np.diff(timestamps)
+        time_diff = time_diff[time_diff > 0]
+        if len(time_diff) == 0:
+            return None
+
+        return 1 / np.nanmedian(time_diff)
     
     
 
@@ -268,6 +292,8 @@ class EEGDataFactory:
         return data
 
     def parse_edf(self, input_file):
+        import pyedflib
+
         f = pyedflib.EdfReader(input_file)
         channel_names = f.getSignalLabels()
         raw_data = []

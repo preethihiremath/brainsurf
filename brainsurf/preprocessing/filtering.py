@@ -1,6 +1,26 @@
 import numpy as np
 from scipy.signal import butter, lfilter, iirnotch
 
+def common_average_reference(data, axis=0):
+    """
+    Apply Common Average Referencing (CAR) to EEG data.
+
+    Parameters:
+        data (array-like): EEG data, typically shaped as channels x samples.
+        axis (int): Channel axis used to compute the common average.
+
+    Returns:
+        array-like: Referenced EEG data with the common average removed.
+    """
+    data = np.asarray(data)
+    return data - np.mean(data, axis=axis, keepdims=True)
+
+def car(data, axis=0):
+    """
+    Alias for common_average_reference.
+    """
+    return common_average_reference(data, axis=axis)
+
 def butter_bandpass_filter(data, lowcut, highcut, fs, order):
     """
     Apply a Butterworth band-pass filter to the input data.

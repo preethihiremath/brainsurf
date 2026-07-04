@@ -2,7 +2,32 @@ import numpy as np
 from scipy.stats import ttest_rel, wilcoxon
 import pandas as pd
 from scipy import stats
-from brainsurf.cognitive_analysis_module.cognitive_indexes import calculate_arousal_index, calculate_band_power, calculate_engagement, calculate_neural_activity, calculate_pe
+from brainsurf.cognitive_analysis_module.cognitive_indexes import calculate_arousal_index, calculate_engagement, calculate_neural_activity, calculate_pe
+from brainsurf.analysis.power_spectrum import extract_frequency_bands
+
+
+def prepare_eeg_frame(data, fs=128):
+    if hasattr(data, "get_data"):
+        data = data.get_data()
+
+    df = pd.DataFrame(data).copy()
+    df.columns = [column.strip() if isinstance(column, str) else column for column in df.columns]
+    if 'EEG' in df.columns and 'raw' not in df.columns:
+        df['raw'] = df['EEG']
+
+    if 'raw' not in df.columns:
+        raise ValueError("EEG data must contain a raw or EEG column.")
+
+    missing_bands = [band for band in ['alpha', 'beta', 'delta', 'theta'] if band not in df.columns]
+    if missing_bands:
+        bands = extract_frequency_bands(pd.to_numeric(df['raw'], errors='coerce'), fs=fs)
+        for band in missing_bands:
+            df[band] = bands[band]
+
+    for column in ['raw', 'alpha', 'beta', 'delta', 'theta']:
+        df[column] = pd.to_numeric(df[column], errors='coerce')
+
+    return df
 
 def calculate_cognitive_indexes(data_before, data_after):
     """
@@ -18,20 +43,14 @@ def calculate_cognitive_indexes(data_before, data_after):
     - cognitive_indexes_after (numpy.ndarray): Cognitive indexes calculated from data_after.
     """
 
+    data_before = prepare_eeg_frame(data_before)
+    data_after = prepare_eeg_frame(data_after)
+
     # Extract the necessary data columns from data_before
-    freqs_before = data_before['sec']
     alpha_power_before = data_before['alpha']
     beta_power_before = data_before['beta']
     delta_power_before = data_before['delta']
     theta_power_before = data_before['theta']
-
-    # Define the frequency bands for calculation
-    bands = {
-        'delta': (0.5, 4),
-        'theta': (4, 8),
-        'alpha': (8, 13),
-        'beta': (13, 30)
-    }
 
     # Calculate cognitive indexes before meditation
     pe_before = calculate_pe(alpha_power_before, beta_power_before)
@@ -41,14 +60,10 @@ def calculate_cognitive_indexes(data_before, data_after):
     )
     eng_before = calculate_engagement(alpha_power_before, theta_power_before, delta_power_before)
     # Extract the necessary data columns from data_after
-    freqs_after = data_after['sec']
     alpha_power_after = data_after['alpha']
     beta_power_after = data_after['beta']
     delta_power_after = data_after['delta']
     theta_power_after = data_after['theta']
-
-    # Calculate band power for each frequency band after meditation
-    band_power_after = calculate_band_power(freqs_after, alpha_power_after, bands)
 
     # Calculate cognitive indexes after meditation
     pe_after = calculate_pe(alpha_power_after,beta_power_after)
@@ -95,6 +110,9 @@ def compare_cognitive_indexes(cognitive_indexes_before, cognitive_indexes_after,
 
 
 def compare_eeg_data_stats(pre_merged, post_merged):
+    pre_merged = prepare_eeg_frame(pre_merged)
+    post_merged = prepare_eeg_frame(post_merged)
+
     # Extract the relevant feature columns
     pre_eeg_raw = pre_merged['raw']
     pre_alpha = pre_merged['alpha']

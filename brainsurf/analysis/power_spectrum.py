@@ -3,45 +3,44 @@ from scipy.signal import welch, coherence, correlate
 import astropy as ast 
 
 
-def extract_frequency_bands(raw_data, fs=128):
-    epoch_length = 1000  # Length of each epoch in milliseconds
-    num_epochs = len(raw_data) // epoch_length
-    pre_epochs = np.split(raw_data[:num_epochs * epoch_length], num_epochs)
-    
-    # Initialize the dictionary to store the frequency bands
+def extract_frequency_bands(raw_data, fs=128, epoch_size=1000):
+    raw_data = np.asarray(raw_data, dtype=float)
+    raw_data = raw_data[~np.isnan(raw_data)]
+    if len(raw_data) == 0:
+        raise ValueError("raw_data must contain numeric values.")
+
+    epoch_samples = max(2, int(round(epoch_size)))
     data = {}
-    
-    for band in ['alpha', 'beta', 'delta', 'theta', 'gamma']:
-        if band not in data:
-            pre_features = []
-            
-            for epoch in pre_epochs:
-                f, psd = welch(epoch, fs=fs)
-                
-                # Adjust the frequency range based on the band
-                if band == 'alpha':
-                    band_psd = psd[(f >= 8) & (f <= 13)]
-                elif band == 'beta':
-                    band_psd = psd[(f >= 13) & (f <= 30)]
-                elif band == 'delta':
-                    band_psd = psd[(f >= 1) & (f <= 4)]
-                elif band == 'theta':
-                    band_psd = psd[(f >= 4) & (f <= 8)]
-                elif band == 'gamma':
-                    band_psd = psd[(f >= 30) & (f <= 50)]
-                else:
-                    raise ValueError("Invalid frequency band.")
-                band_power = np.mean(band_psd) if band_psd.any() else np.nan
-                pre_features.append(band_power)
-            
-            # Make sure the extracted features have the same length as the original data
-            pre_features += [np.nan] * (len(raw_data) - len(pre_features))
-            
-            data[band] = pre_features
+    bands = {
+        'delta': (1, 4),
+        'theta': (4, 8),
+        'alpha': (8, 13),
+        'beta': (13, 30),
+        'gamma': (30, 50),
+    }
+
+    for band, (low, high) in bands.items():
+        features = np.full(len(raw_data), np.nan)
+        for start in range(0, len(raw_data), epoch_samples):
+            stop = min(start + epoch_samples, len(raw_data))
+            epoch = raw_data[start:stop]
+            if len(epoch) < 2:
+                continue
+
+            f, psd = welch(epoch, fs=fs, nperseg=min(256, len(epoch)))
+            band_psd = psd[(f >= low) & (f <= high)]
+            features[start:stop] = np.mean(band_psd) if band_psd.size else np.nan
+
+        data[band] = features
             
     return data
 
 def psd_fft(data, sfreq, freq_range=(0, 100)):
+    data = np.asarray(data, dtype=float)
+    data = data[~np.isnan(data)]
+    if len(data) == 0:
+        raise ValueError("data must contain numeric values.")
+
     fft_data = np.fft.rfft(data)
     power_spectrum = np.abs(fft_data)**2 / len(data)
     freqs = np.fft.rfftfreq(len(data), 1.0/sfreq)
@@ -50,10 +49,19 @@ def psd_fft(data, sfreq, freq_range=(0, 100)):
     power_spectrum = power_spectrum[mask]
     return freqs, power_spectrum
 
-def psd_welch(data, fs):
-    nperseg= calculate_nperseg(data)
-    freqs, psd = welch(data, fs=fs, nperseg=10)
-    print(freqs)
+def psd_welch(data, fs=None, sampling_freq=None):
+    if fs is None:
+        fs = sampling_freq
+    if fs is None:
+        raise ValueError("Sampling frequency must be provided using fs or sampling_freq.")
+
+    data = np.asarray(data, dtype=float)
+    data = data[~np.isnan(data)]
+    if len(data) == 0:
+        raise ValueError("data must contain numeric values.")
+
+    nperseg = calculate_nperseg(data)
+    freqs, psd = welch(data, fs=fs, nperseg=nperseg)
     return freqs, psd
 
 def psd_lombscargle(signal, fs):

@@ -1,6 +1,6 @@
 import numpy as np
-from scipy import signal
-from sklearn.decomposition import FastICA
+import pywt
+from sklearn.decomposition import FastICA, PCA
 from sklearn.preprocessing import StandardScaler
 
 def signal_averaging(data):
@@ -39,7 +39,7 @@ def pca_removal(data, n_components=1):
     reconstructed_data = scaler.inverse_transform(pca.inverse_transform(components))
     return reconstructed_data
 
-def regression_based_removal(data, regressor, artifacts):
+def regression_based_removal(data, regressor, artifacts=None):
     """
     Apply regression-based artifact removal by modeling artifacts as a function of other variables.
     """
