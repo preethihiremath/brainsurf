@@ -79,10 +79,10 @@ def calculate_relative_power(freqs, psd):
     alpha_mask = (freqs >= 8) & (freqs <= 13)
     beta_mask = (freqs >= 13) & (freqs <= 30)
 
-    delta_power = np.trapz(psd[delta_mask], freqs[delta_mask])
-    theta_power = np.trapz(psd[theta_mask], freqs[theta_mask])
-    alpha_power = np.trapz(psd[alpha_mask], freqs[alpha_mask])
-    beta_power = np.trapz(psd[beta_mask], freqs[beta_mask])
+    delta_power = np.trapezoid(psd[delta_mask], freqs[delta_mask])
+    theta_power = np.trapezoid(psd[theta_mask], freqs[theta_mask])
+    alpha_power = np.trapezoid(psd[alpha_mask], freqs[alpha_mask])
+    beta_power = np.trapezoid(psd[beta_mask], freqs[beta_mask])
 
     total_power = delta_power + theta_power + alpha_power + beta_power
 

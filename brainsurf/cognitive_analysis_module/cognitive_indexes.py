@@ -4,7 +4,7 @@ def calculate_band_power(freqs, power, bands):
         band_power = {}
         for band, f_range in bands.items():
             idx = np.logical_and(freqs >= f_range[0], freqs <= f_range[1])
-            band_power[band] = np.trapz(power[idx], freqs[idx])
+            band_power[band] = np.trapezoid(power[idx], freqs[idx])
 
         return band_power
 
